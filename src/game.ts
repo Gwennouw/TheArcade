@@ -10,7 +10,7 @@ export class Game extends Entity {
 	targets: Array<Target>
 	player: Player
 	score: Score
-	decors: GLTFShape
+	decor: GLTFShape
 	starter: Entity
 	difficultyRate: number
 	started: boolean = false
@@ -20,6 +20,9 @@ export class Game extends Entity {
 		super()
 		engine.addEntity(this)
 		this.targets = []
+		this.decor = new GLTFShape('models/base.glb')
+		this.addComponent(this.decor)
+		this.addComponent(new Transform({position: new Vector3(8,0,16), rotation: new Quaternion(0,1,0,0)}))
 		this.score = new Score()
 		this.addComponent(new GameFlag())
 		this.starter = new Entity()
