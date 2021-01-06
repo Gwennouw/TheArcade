@@ -32,8 +32,7 @@ export class Player extends Entity {
 			uiimage.paddingBottom = 5
 			this.lifeIcons.push(uiimage)
 		}
-		this.system = new UIPlayerSystem(this)
-		engine.addSystem(this.system)
+		this.start()
 	}
 	
 	removeLife(){
@@ -42,7 +41,15 @@ export class Player extends Entity {
 		log('lifes : ',this.life)
 	}
 	
-	stop(){}
+	start(){
+		this.system = new UIPlayerSystem(this)
+		engine.addSystem(this.system)
+	}
+	
+	stop(){
+		engine.removeSystem(this.system)
+		engine.removeEntity(this)
+	}
 }
 
 export class UIPlayerSystem implements ISystem {

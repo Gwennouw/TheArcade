@@ -21,6 +21,7 @@ export class Target extends Entity {
 		this.addComponent(this.animator)
 		this.hitClip = new AnimationState('target1Hit')
 		this.hitClip.looping = false
+		this.hitClip.stop()
 		this.hitClip.reset()
 		this.animator.addClip(this.hitClip)
 		

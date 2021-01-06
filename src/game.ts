@@ -20,6 +20,7 @@ export class Game extends Entity {
 		super()
 		engine.addEntity(this)
 		this.targets = []
+		this.difficultyRate = 1
 		this.decor = new GLTFShape('models/base.glb')
 		this.addComponent(this.decor)
 		this.addComponent(new Transform({position: new Vector3(8,0,16), rotation: new Quaternion(0,1,0,0)}))
@@ -27,7 +28,7 @@ export class Game extends Entity {
 		this.addComponent(new GameFlag())
 		this.starter = new Entity()
 		this.starter.addComponent(new BoxShape())
-		this.starter.addComponent(new Transform({position: new Vector3(5,0.5,5), scale:new Vector3(0.25,1,0.25)}))
+		this.starter.addComponent(new Transform({position: new Vector3(5,1,12), scale:new Vector3(0.25,1,0.25)}))
 		this.starter.addComponent(
 			new OnPointerDown((e) => {
 				log("myEntity was clicked", e)
@@ -40,7 +41,7 @@ export class Game extends Entity {
 	start(){
 		this.started = true
 		this.addComponent(
-			new utils.Interval(3000, () => {
+			new utils.Interval(1000, () => {
 				const random = Math.floor(Math.random() * Math.floor(10));
 				log('random : ',random)
 				const target = new Target(this,random,1)
@@ -51,10 +52,12 @@ export class Game extends Entity {
 		this.system = new GameSystem(this)
 		engine.addSystem(this.system)
 	}
+	
 	stop(){
-		engine.removeEntity(this.player)
-		// this.removeComponent(utils.Interval)
+		this.player.stop()
+		this.removeComponent(utils.Interval)
 		engine.removeSystem(this.system)
+		this.started = false
 		this.score.resetScore()
 	}
 }
@@ -67,8 +70,8 @@ export class GameSystem implements ISystem {
 	}
 	update(dt: number) {
 	 // && this.game !== undefined
-		if(this.game.player.life <= 0 && this.game.started == true){
-			this.game.removeComponent(utils.Interval)
+		if(this.game.player.life <= 0 && this.game.started === true){
+			// this.game.removeComponent(utils.Interval)
 			this.game.stop()
 		}
 	}
