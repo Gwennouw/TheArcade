@@ -26,6 +26,7 @@ export class Game extends Entity {
 		this.addComponent(new Transform({position: new Vector3(8,0,16), rotation: new Quaternion(0,1,0,0)}))
 		this.score = new Score()
 		this.addComponent(new GameFlag())
+		
 		this.starter = new Entity()
 		this.starter.addComponent(new BoxShape())
 		this.starter.addComponent(new Transform({position: new Vector3(5,1,12), scale:new Vector3(0.25,1,0.25)}))
@@ -69,12 +70,18 @@ export class GameSystem implements ISystem {
 		this.game = game
 	}
 	update(dt: number) {
-	 // && this.game !== undefined
 		if(this.game.player.life <= 0 && this.game.started === true){
 			// this.game.removeComponent(utils.Interval)
 			this.game.stop()
 		}
 	}
 }
+
+const wall = new Entity()
+engine.addEntity(wall)
+wall.addComponent(new Transform({position: new Vector3(8,4,12), scale: new Vector3(16,6,1)}))
+wall.addComponent(new PlaneShape())
+wall.getComponent(PlaneShape).visible = false
+wall.getComponent(PlaneShape).isPointerBlocker = false
 
 const game = new Game()

@@ -1,15 +1,30 @@
 import utils from 'node_modules/decentraland-ecs-utils/index'
+import { Gun } from './gun'
+
+@Component('gunTimer')
+export class GunTimer{
+	totalTime: number
+	
+	constructor(time: number){
+		this.totalTime = time
+	}
+}
 
 export class Player extends Entity {
 	life: number = 5
 	lifesContainer: UIContainerStack
 	canvas: UICanvas
 	lifeIcons: Array<UIImage>
-	system: ISystem
+	uiSystem: ISystem
+	gun: Gun
+	camera: Camera
 	
 	constructor(){
 		super()
 		engine.addEntity(this)
+		
+		this.camera = Camera.instance		
+		
 		this.canvas = new UICanvas()
 		this.lifesContainer = new UIContainerStack(this.canvas)
 		this.lifesContainer.width = '100%'
@@ -42,12 +57,16 @@ export class Player extends Entity {
 	}
 	
 	start(){
-		this.system = new UIPlayerSystem(this)
-		engine.addSystem(this.system)
+		this.gun = new Gun(this)
+		this.gun.start()
+		this.uiSystem = new UIPlayerSystem(this)
+		engine.addSystem(this.uiSystem)
 	}
 	
 	stop(){
-		engine.removeSystem(this.system)
+		this.gun.stop()
+		engine.removeSystem(this.uiSystem)
+		engine.removeEntity(this.gun)
 		engine.removeEntity(this)
 	}
 }
@@ -67,10 +86,7 @@ export class UIPlayerSystem implements ISystem {
 			for(let icon of removedIcons){
 				icon.visible = false
 			}
-			// for(let i=0;i<this.player.life-1;i++){
-				// const icon = this.player.lifeIcons[i]
-				// this.player.removeComponent(this.player.lifeIcons[i])
-			// }
 		}
 	}
 }
+
