@@ -23,13 +23,14 @@ export class Game extends Entity {
 		this.difficultyRate = 1
 		this.decor = new GLTFShape('models/base.glb')
 		this.addComponent(this.decor)
-		this.addComponent(new Transform({position: new Vector3(8,0,16), rotation: new Quaternion(0,1,0,0)}))
-		this.score = new Score()
+		this.addComponent(new Transform({position: new Vector3(16,0,8), rotation: new Quaternion(0,1,0,-1)}))
+		this.score = new Score(this)
 		this.addComponent(new GameFlag())
 		
 		this.starter = new Entity()
+		// this.starter.setParent(this)
 		this.starter.addComponent(new BoxShape())
-		this.starter.addComponent(new Transform({position: new Vector3(5,1,12), scale:new Vector3(0.25,1,0.25)}))
+		this.starter.addComponent(new Transform({position: new Vector3(12,0.75,12), scale:new Vector3(0.25,1,0.25)}))
 		this.starter.addComponent(
 			new OnPointerDown((e) => {
 				log("myEntity was clicked", e)
@@ -43,7 +44,7 @@ export class Game extends Entity {
 		this.started = true
 		this.addComponent(
 			new utils.Interval(1000, () => {
-				const random = Math.floor(Math.random() * Math.floor(10));
+				const random = Math.floor(Math.random() * Math.floor(6));
 				log('random : ',random)
 				const target = new Target(this,random,1)
 				this.targets.push(target)
@@ -77,11 +78,12 @@ export class GameSystem implements ISystem {
 	}
 }
 
+const game = new Game()
+
 const wall = new Entity()
 engine.addEntity(wall)
-wall.addComponent(new Transform({position: new Vector3(8,4,12), scale: new Vector3(16,6,1)}))
+wall.setParent(game)
+wall.addComponent(new Transform({position: new Vector3(0,4,5), scale: new Vector3(16,6,1)}))
 wall.addComponent(new PlaneShape())
 wall.getComponent(PlaneShape).visible = false
 wall.getComponent(PlaneShape).isPointerBlocker = false
-
-const game = new Game()

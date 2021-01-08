@@ -48,6 +48,8 @@ export class Player extends Entity {
 			this.lifeIcons.push(uiimage)
 		}
 		this.start()
+		this.gun = new Gun(this)
+		this.gun.start()
 	}
 	
 	removeLife(){
@@ -57,16 +59,16 @@ export class Player extends Entity {
 	}
 	
 	start(){
-		this.gun = new Gun(this)
-		this.gun.start()
+		// this.gun = new Gun(this)
+		// this.gun.start()
 		this.uiSystem = new UIPlayerSystem(this)
 		engine.addSystem(this.uiSystem)
 	}
 	
 	stop(){
-		this.gun.stop()
+		// this.gun.stop()
 		engine.removeSystem(this.uiSystem)
-		engine.removeEntity(this.gun)
+		// engine.removeEntity(this.gun)
 		engine.removeEntity(this)
 	}
 }

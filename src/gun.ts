@@ -13,6 +13,7 @@ export class Gun extends Entity {
 		
 		// Initialization
 		this.player = player
+		// this.setParent(this.player)
 		this.gunSystem = new GunSystem(this.player)
 		this.addComponent(new GLTFShape('models/weapon.glb'))
 		
@@ -52,17 +53,34 @@ class GunSystem implements ISystem {
 	}
 	
 	update(dt: number) {
-		const gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.x*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.z*(180/Math.PI)))))
-		if(this.player.gun.getComponent(Transform).position !== gunPos){
-			log('player pos : ',this.player.camera.position)
-			log('gun pos : ',gunPos)
+		let gunPos = new Vector3()
+		if(this.player.camera.rotation.eulerAngles.y >= 0 && this.player.camera.rotation.eulerAngles.y <= 90){
+			gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
+		} 
+		// else if(this.player.camera.rotation.eulerAngles.y > 90 && this.player.camera.rotation.eulerAngles.y <= 180){
+			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
+		// }
+		// else if(this.player.camera.rotation.eulerAngles.y > 180 && this.player.camera.rotation.eulerAngles.y <= 270){
+			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
+		// } 
+		// else if(this.player.camera.rotation.eulerAngles.y > 270 && this.player.camera.rotation.eulerAngles.y <= 360){
+			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
+		// }
+		
+		if(this.player.gun.getComponent(Transform).position.x !== gunPos.x && this.player.gun.getComponent(Transform).position.y !== gunPos.y){
+			// log('******')
+			// log('player pos : ',this.player.camera.position)
+			// log('gun pos : ',gunPos)
+			// log('******')
 			this.player.gun.getComponent(Transform).position = gunPos
 		}
 		
-		const gunRot = new Vector3((this.player.camera.rotation.eulerAngles.x),(this.player.camera.rotation.eulerAngles.y-90),(this.player.camera.rotation.eulerAngles.z))
-		if(this.player.gun.getComponent(Transform).rotation.eulerAngles !== gunRot){
-			log('player rot : ',this.player.camera.rotation.eulerAngles)
-			log('gun rot : ',gunRot)
+		const gunRot = new Vector3((this.player.camera.rotation.eulerAngles.x),(this.player.camera.rotation.eulerAngles.y),(this.player.camera.rotation.eulerAngles.z))
+		if(this.player.gun.getComponent(Transform).rotation.eulerAngles.y !== gunRot.y){
+			// log('player rot.euler : ',this.player.camera.rotation.eulerAngles)
+			// log('player rot : ',this.player.camera.rotation)
+			// log('gun rot : ',gunRot)
+			// log('******')
 			this.player.gun.getComponent(Transform).rotation.eulerAngles = gunRot
 		}
 	}
