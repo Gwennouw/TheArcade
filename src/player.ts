@@ -28,6 +28,8 @@ export class Player extends Entity {
 		this.camera = Camera.instance		
 		this.input = Input.instance
 		this.addComponent(new GunTimer())
+		
+		// UI
 		this.canvas = new UICanvas()
 		this.lifesContainer = new UIContainerStack(this.canvas)
 		this.lifesContainer.width = '100%'
@@ -51,7 +53,7 @@ export class Player extends Entity {
 			this.lifeIcons.push(uiimage)
 		}
 		
-		this.start()
+		// Gun
 		this.gun = new Gun(this)
 		this.gun.start()
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
@@ -69,12 +71,21 @@ export class Player extends Entity {
 				}
 			}
 			if(this.getComponent(GunTimer).waiting  !== true){
+				this.gun.balls--
 				this.getComponent(GunTimer).waiting  = true
-				this.gun.addComponent(new utils.Delay(500, () =>{
-					this.getComponent(GunTimer).waiting  = false
-				}))
+				if(this.gun.balls === 0){
+					this.gun.addComponent(new utils.Delay(1500, () =>{
+						this.getComponent(GunTimer).waiting  = false
+					}))
+				} else {
+					this.gun.addComponent(new utils.Delay(500, () =>{
+						this.getComponent(GunTimer).waiting  = false
+					}))
+				}
 			}
 		})
+		
+		this.start()
 	}
 	
 	shoot(){
@@ -109,11 +120,11 @@ export class UIPlayerSystem implements ISystem {
 	}
 	update(dt: number) {
 		if(this.player.life !== this.player.lifeIcons.length){
-			const diff = this.player.lifeIcons.length - this.player.life
-			const removedIcons = this.player.lifeIcons.splice(this.player.life, diff)
+			const diffLifes = this.player.lifeIcons.length - this.player.life
+			const removedIconsLifes = this.player.lifeIcons.splice(this.player.life, diffLifes)
 			log('life : ',this.player.life,' - icon : ',this.player.lifeIcons.length)
-			log('removedIcons : ',removedIcons)
-			for(let icon of removedIcons){
+			log('removedIconsLifes : ',removedIconsLifes)
+			for(let icon of removedIconsLifes){
 				icon.visible = false
 			}
 		}
