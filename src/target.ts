@@ -1,6 +1,9 @@
 import utils from 'node_modules/decentraland-ecs-utils/index'
 import { Game } from './game'
 
+@Component('targetFlag')
+export class TargetFlag {}
+
 export class Target extends Entity {
 	speed: number
 	valueScore: number
@@ -22,6 +25,7 @@ export class Target extends Entity {
 		this.addComponent(new GLTFShape('models/target1.glb'))
 		this.animator = new Animator()
 		this.addComponent(this.animator)
+		this.addComponent(new TargetFlag())
 		this.hitClip = new AnimationState('target1Hit')
 		this.hitClipCollider = new AnimationState('target1Hit_collider')
 		this.hitClip.looping = false
@@ -72,19 +76,19 @@ export class Target extends Entity {
 		}
 		
 		// Hit a target
-		this.addComponent(
-			new OnPointerDown((e) => {
-				log("myEntity was clicked", e)
-				this.hitClip.play()
-				this.hitClipCollider.play()
-				this.game.score.addScore(this.valueScore)
-				this.displayScore(true)
-				this.addComponentOrReplace(new utils.Delay(1000, () =>{
-					engine.removeEntity(this)
-				}))
-				this.removeComponent(OnPointerDown)
-			}, {distance: 35})
-		)
+		// this.addComponent(
+			// new OnPointerDown((e) => {
+				// log("myEntity was clicked", e)
+				// this.hitClip.play()
+				// this.hitClipCollider.play()
+				// this.game.score.addScore(this.valueScore)
+				// this.displayScore(true)
+				// this.addComponentOrReplace(new utils.Delay(1000, () =>{
+					// engine.removeEntity(this)
+				// }))
+				// this.removeComponent(OnPointerDown)
+			// }, {distance: 35})
+		// )
 		
 		// Target is not hit
 		this.addComponent(new utils.Delay(3000, () =>{
@@ -98,6 +102,16 @@ export class Target extends Entity {
 		}))
 	}
 	
+	hitTarget(){
+		this.hitClip.play()
+		this.hitClipCollider.play()
+		this.game.score.addScore(this.valueScore)
+		this.displayScore(true)
+		this.addComponentOrReplace(new utils.Delay(1000, () =>{
+			engine.removeEntity(this)
+		}))
+	}
+	
 	displayScore(bonus){
 		const score = new Entity()
 		score.setParent(this)
@@ -105,21 +119,21 @@ export class Target extends Entity {
 		score.getComponent(Transform).rotation.eulerAngles = new Vector3(0,180,0)
 		const text = new TextShape()
 		if(bonus === true){
-			text.value = '+'+this.valueScore.toString()
+			text.value = '+'+this.valueScore.toString()+' pts'
 			text.color = Color3.Green()
 		} else {
-			text.value = '-'+this.valueScore.toString()
+			text.value = '-'+this.valueScore.toString()+' life'
 			text.color = Color3.Red()
 		}
 		text.fontSize = 10
 		score.addComponent(text)
 		engine.addEntity(score)
 		if(this.direction === 'right'){
-			score.addComponent(new utils.MoveTransformComponent(new Vector3(0,1,0), new Vector3(-2,1.75,0),2, () => {
+			score.addComponent(new utils.MoveTransformComponent(new Vector3(0,1,0), new Vector3(-2,2,0),2, () => {
 				engine.removeEntity(score)
 			}))
 		} else {
-			score.addComponent(new utils.MoveTransformComponent(new Vector3(0,1,0), new Vector3(+2,1.75,0),2, () => {
+			score.addComponent(new utils.MoveTransformComponent(new Vector3(0,1,0), new Vector3(2,2,0),2, () => {
 				engine.removeEntity(score)
 			}))
 		}

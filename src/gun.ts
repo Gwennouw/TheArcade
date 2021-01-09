@@ -55,7 +55,8 @@ class GunSystem implements ISystem {
 	update(dt: number) {
 		let gunPos = new Vector3()
 		if(this.player.camera.rotation.eulerAngles.y >= 0 && this.player.camera.rotation.eulerAngles.y <= 90){
-			gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
+			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
+			gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.y))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.y))))
 		} 
 		// else if(this.player.camera.rotation.eulerAngles.y > 90 && this.player.camera.rotation.eulerAngles.y <= 180){
 			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))

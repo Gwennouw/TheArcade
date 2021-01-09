@@ -72,7 +72,6 @@ export class GameSystem implements ISystem {
 	}
 	update(dt: number) {
 		if(this.game.player.life <= 0 && this.game.started === true){
-			// this.game.removeComponent(utils.Interval)
 			this.game.stop()
 		}
 	}
