@@ -13,6 +13,7 @@ export class GunTimer{
 
 export class Player extends Entity {
 	life: number = 5
+	lifeVisible: number = 5
 	lifesContainer: UIContainerStack
 	canvas: UICanvas
 	lifeIcons: Array<UIImage>
@@ -21,19 +22,20 @@ export class Player extends Entity {
 	camera: Camera
 	input: Input
 	
-	constructor(){
+	constructor(parent: Entity, canvas: UICanvas){
 		super()
 		engine.addEntity(this)
-		
+		this.setParent(parent)
 		this.camera = Camera.instance		
 		this.input = Input.instance
 		this.addComponent(new GunTimer())
+		this.uiSystem = new UIPlayerSystem(this)
 		
 		// UI
-		this.canvas = new UICanvas()
+		this.canvas = canvas
 		this.lifesContainer = new UIContainerStack(this.canvas)
-		this.lifesContainer.width = '100%'
-		this.lifesContainer.height = 320
+		this.lifesContainer.width = '20%'
+		this.lifesContainer.height = '100%'
 		this.lifesContainer.positionX = '1%'
 		this.lifesContainer.positionY = '-30%'		
 		this.lifesContainer.hAlign = "left"
@@ -54,8 +56,7 @@ export class Player extends Entity {
 		}
 		
 		// Gun
-		this.gun = new Gun(this)
-		this.gun.start()
+		this.gun = new Gun(this, this.canvas)
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
 			// log('player Click !', e)
 			this.gun.gunShoot.play()
@@ -84,31 +85,37 @@ export class Player extends Entity {
 				}
 			}
 		})
-		
-		this.start()
 	}
 	
-	shoot(){
+	// shoot(){
 	
-	}
+	// }
 	
 	removeLife(){
 		this.life -= 1
 		log('lifes : ',this.life)
 	}
 	
+	generateLifeIcons(){
+		for(let icon of this.lifeIcons){
+			icon.visible = true
+		}
+	}
+	
 	start(){
+		this.life = 5
+		this.lifeVisible = 5
+		this.generateLifeIcons()
+		this.gun.start()
 		// this.gun = new Gun(this)
-		// this.gun.start()
-		this.uiSystem = new UIPlayerSystem(this)
 		engine.addSystem(this.uiSystem)
 	}
 	
 	stop(){
-		// this.gun.stop()
+		this.gun.stop()
 		engine.removeSystem(this.uiSystem)
-		// engine.removeEntity(this.gun)
-		engine.removeEntity(this)
+		log('player.this : ',this)
+		log('player.this.gun : ',this.gun)
 	}
 }
 
@@ -119,13 +126,10 @@ export class UIPlayerSystem implements ISystem {
 		this.player = player
 	}
 	update(dt: number) {
-		if(this.player.life !== this.player.lifeIcons.length){
-			const diffLifes = this.player.lifeIcons.length - this.player.life
-			const removedIconsLifes = this.player.lifeIcons.splice(this.player.life, diffLifes)
-			log('life : ',this.player.life,' - icon : ',this.player.lifeIcons.length)
-			log('removedIconsLifes : ',removedIconsLifes)
-			for(let icon of removedIconsLifes){
-				icon.visible = false
+		if(this.player.life !== this.player.lifeVisible){
+			if(this.player.life >= 0){
+				this.player.lifeIcons[this.player.life].visible = false
+				this.player.lifeVisible--
 			}
 		}
 	}

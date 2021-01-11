@@ -8,36 +8,38 @@ export class Gun extends Entity {
 	gunLoad: AnimationState
 	player: Player
 	balls: number
+	ballsVisible: number
 	ballsContainer: UIContainerStack
 	ballsIcons: Array<UIImage>
 	ballIconTexture: Texture
 	
-	constructor(player: Player){
+	constructor(player: Player, canvas: UICanvas){
 		super()
 		engine.addEntity(this)
 		
 		// Initialization
 		this.player = player
 		this.balls = 6
+		this.ballsVisible = 6
 		// this.setParent(this.player)
 		this.gunSystem = new GunSystem(this.player)
-		this.ballsSystem = new BallsSystem(this.player)
+		this.ballsSystem = new BallsSystem(this)
 		this.addComponent(new GLTFShape('models/weapon.glb'))
 		
 		this.addComponent(new Animator())
 		this.gunShoot = new AnimationState('weaponshoot')
 		this.gunLoad = new AnimationState('weaponload')
+		this.getComponent(Animator).addClip(this.gunShoot)
+		this.getComponent(Animator).addClip(this.gunLoad)
 		this.gunShoot.looping = false
 		this.gunLoad.looping = false
 		this.gunShoot.stop()
 		this.gunLoad.stop()
 		this.gunShoot.reset()
 		this.gunLoad.reset()
-		this.getComponent(Animator).addClip(this.gunShoot)
-		this.getComponent(Animator).addClip(this.gunLoad)
 		
 		// UI
-		this.ballsContainer = new UIContainerStack(this.player.canvas)
+		this.ballsContainer = new UIContainerStack(canvas)
 		this.ballsContainer.width = '20%'
 		this.ballsContainer.height = 320
 		this.ballsContainer.positionX = '0%'
@@ -45,6 +47,7 @@ export class Gun extends Entity {
 		this.ballsContainer.hAlign = "right"
 		this.ballsContainer.vAlign = "top"
 		this.ballsContainer.stackOrientation = UIStackOrientation.VERTICAL
+		log('ballsContainer : ',this.ballsContainer)
 		let ballIcon = "images/bullet.png"
 		this.ballIconTexture = new Texture(ballIcon)
 		this.ballsIcons = []
@@ -61,7 +64,6 @@ export class Gun extends Entity {
 		
 		this.generateBallsIcons()
 		const gunPos = new Vector3((this.player.camera.position.x+0.5),(this.player.camera.position.y-0.5),(this.player.camera.position.z+0.5))
-		// const gunRot = new Quaternion((this.player.camera.position.x),(this.player.camera.position.y),(this.player.camera.position.z),(this.player.camera.position.w))
 		this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,1,0,1)}))
 		engine.addEntity(this)
 	}
@@ -73,6 +75,9 @@ export class Gun extends Entity {
 	}
 	
 	start(){
+		this.balls = 6
+		this.ballsVisible = 6
+		this.generateBallsIcons()
 		engine.addSystem(this.ballsSystem)
 		engine.addSystem(this.gunSystem)
 	}
@@ -80,6 +85,7 @@ export class Gun extends Entity {
 	stop(){
 		engine.removeSystem(this.ballsSystem)
 		engine.removeSystem(this.gunSystem)
+		// engine.removeEntity(this)
 	}
 }
 
@@ -127,24 +133,27 @@ class GunSystem implements ISystem {
 }
 
 export class BallsSystem implements ISystem {
-	player: Player
+	gun: Gun
+	// removedIconsBalls: UIImage
 
-	constructor(player) {
-		this.player = player
+	constructor(gun) {
+		this.gun = gun
 	}
 	update(dt: number) {
-		if(this.player.gun.balls !== this.player.gun.ballsIcons.length){
-			const diffBalls = this.player.gun.ballsIcons.length - this.player.gun.balls
-			// const removedIconsBalls = this.player.gun.ballsIcons.splice(this.player.gun.balls, diffBalls)
-			const removedIconsBalls = this.player.gun.ballsIcons[this.player.gun.balls]
-			// log('balls : ',this.player.gun.ballsIcons,' - icon : ',this.player.gun.ballsIcons)
-			// log('removedIconsBalls : ',removedIconsBalls)
-			// for(let icon of removedIconsBalls){
-				removedIconsBalls.visible = false
-			// }
-			if (this.player.gun.balls === 0){
-				this.player.gun.balls = 6
-				this.player.gun.generateBallsIcons()
+		if(this.gun.balls !== this.gun.ballsVisible){
+			if(this.gun.balls >= 0){
+				if(this.gun.balls === 0){
+					this.gun.ballsIcons[this.gun.balls].visible = false
+				} else {
+					this.gun.ballsIcons[this.gun.balls].visible = false
+				}
+				this.gun.ballsVisible--
+				
+				if (this.gun.balls <= 0){
+					this.gun.balls = 6
+					this.gun.ballsVisible = 6
+					this.gun.generateBallsIcons()
+				}
 			}
 		}
 	}

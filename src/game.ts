@@ -12,6 +12,7 @@ export class Game extends Entity {
 	score: Score
 	decor: GLTFShape
 	starter: Entity
+	canvas: UICanvas
 	difficultyRate: number
 	started: boolean = false
 	system: ISystem
@@ -19,6 +20,7 @@ export class Game extends Entity {
 	constructor(){
 		super()
 		engine.addEntity(this)
+		this.canvas = new UICanvas()
 		this.targets = []
 		this.difficultyRate = 1
 		this.decor = new GLTFShape('models/base.glb')
@@ -31,6 +33,7 @@ export class Game extends Entity {
 		// this.starter.setParent(this)
 		this.starter.addComponent(new BoxShape())
 		this.starter.addComponent(new Transform({position: new Vector3(12,0.75,12), scale:new Vector3(0.25,1,0.25)}))
+		log("this.player", this.player)
 		this.starter.addComponent(
 			new OnPointerDown((e) => {
 				log("myEntity was clicked", e)
@@ -50,13 +53,18 @@ export class Game extends Entity {
 				this.targets.push(target)
 			})
 		)
-		this.player = new Player()
+		if(this.player === undefined){
+			this.player = new Player(this,this.canvas)
+		}
+		this.player.start()
 		this.system = new GameSystem(this)
 		engine.addSystem(this.system)
+		this.canvas.visible = true
 	}
 	
 	stop(){
 		this.player.stop()
+		this.canvas.visible = false
 		this.removeComponent(utils.Interval)
 		engine.removeSystem(this.system)
 		this.started = false
