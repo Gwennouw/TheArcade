@@ -58,15 +58,11 @@ export class Player extends Entity {
 		// Gun
 		this.gun = new Gun(this, this.canvas)
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
-			// log('player Click !', e)
 			this.gun.gunShoot.play()
 			if(e.hit){
 				let hitEntity = engine.entities[e.hit.entityId]
 				if(this.getComponent(GunTimer).waiting !== true && hitEntity !== undefined){
-					log('hitEntity !', hitEntity)
 					if(hitEntity.getComponent(TargetFlag) !== undefined ){
-						log('hitEntity.getComponent(TargetFlag) !', hitEntity.getComponent(TargetFlag))
-						log('Target exist !', hitEntity)
 						hitEntity.hitTarget()
 					}
 				}
@@ -93,7 +89,6 @@ export class Player extends Entity {
 	
 	removeLife(){
 		this.life -= 1
-		log('lifes : ',this.life)
 	}
 	
 	generateLifeIcons(){
@@ -114,8 +109,6 @@ export class Player extends Entity {
 	stop(){
 		this.gun.stop()
 		engine.removeSystem(this.uiSystem)
-		log('player.this : ',this)
-		log('player.this.gun : ',this.gun)
 	}
 }
 

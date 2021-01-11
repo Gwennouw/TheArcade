@@ -47,7 +47,7 @@ export class Gun extends Entity {
 		this.ballsContainer.hAlign = "right"
 		this.ballsContainer.vAlign = "top"
 		this.ballsContainer.stackOrientation = UIStackOrientation.VERTICAL
-		log('ballsContainer : ',this.ballsContainer)
+		// log('ballsContainer : ',this.ballsContainer)
 		let ballIcon = "images/bullet.png"
 		this.ballIconTexture = new Texture(ballIcon)
 		this.ballsIcons = []

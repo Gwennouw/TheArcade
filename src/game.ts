@@ -33,12 +33,10 @@ export class Game extends Entity {
 		// this.starter.setParent(this)
 		this.starter.addComponent(new BoxShape())
 		this.starter.addComponent(new Transform({position: new Vector3(12,0.75,12), scale:new Vector3(0.25,1,0.25)}))
-		log("this.player", this.player)
 		this.starter.addComponent(
 			new OnPointerDown((e) => {
-				log("myEntity was clicked", e)
 				this.start()
-			})
+			},{hoverText: "Play"})
 		)
 		engine.addEntity(this.starter)
 	}
@@ -48,7 +46,6 @@ export class Game extends Entity {
 		this.addComponent(
 			new utils.Interval(1000, () => {
 				const random = Math.floor(Math.random() * Math.floor(6));
-				log('random : ',random)
 				const target = new Target(this,random,1)
 				this.targets.push(target)
 			})
@@ -64,6 +61,7 @@ export class Game extends Entity {
 	
 	stop(){
 		this.player.stop()
+		this.starter.getComponent(BoxShape).visible = true
 		this.canvas.visible = false
 		this.removeComponent(utils.Interval)
 		engine.removeSystem(this.system)
@@ -79,8 +77,14 @@ export class GameSystem implements ISystem {
 		this.game = game
 	}
 	update(dt: number) {
+		if(this.game.started === true && this.game.starter.getComponent(BoxShape).isPointerBlocker == true){
+			log('this.game.starter.getComponent(BoxShape).visible : ', this.game.starter.getComponent(BoxShape).visible
+			// this.game.starter.getComponent(BoxShape).isPointerBlocker = false
+			this.game.starter.getComponent(BoxShape).visible = false
+		}
 		if(this.game.player.life <= 0 && this.game.started === true){
 			this.game.stop()
+			// if(this.game.starter)
 		}
 	}
 }
