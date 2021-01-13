@@ -58,34 +58,49 @@ export class Player extends Entity {
 		// Gun
 		this.gun = new Gun(this, this.canvas)
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
-			this.gun.gunShoot.play()
-			if(e.hit){
-				let hitEntity = engine.entities[e.hit.entityId]
-				if(this.getComponent(GunTimer).waiting !== true && hitEntity !== undefined){
-					if(hitEntity.getComponent(TargetFlag) !== undefined ){
-						hitEntity.hitTarget()
+			// Manage Gun in shoot
+			if(this.getComponent(GunTimer).waiting  === false){
+				this.gun.gunShoot.play()
+				this.getComponent(GunTimer).waiting = true
+				if(this.gun.balls !== 0){
+					this.gun.balls--
+					log('Shoot !')
+					this.gun.addComponent(new utils.Delay(250, () =>{
+						log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
+						this.getComponent(GunTimer).waiting  = false
+						this.gun.gunShoot.stop()
+						this.gun.gunShoot.reset()
+					}))
+					if(this.gun.balls === 0) {
+						this.getComponent(GunTimer).waiting  = true
+						this.gun.gunShoot.stop()
+						this.gun.gunShoot.reset()
+						this.gun.gunLoad.play()
+						log('Reaload !')
+						log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
+						this.gun.addComponentOrReplace(new utils.Delay(1250, () =>{
+							this.getComponent(GunTimer).waiting  = false
+							this.gun.gunLoad.stop()
+							this.gun.gunLoad.reset()
+						}))
 					}
-				}
-			}
-			if(this.getComponent(GunTimer).waiting  !== true){
-				this.gun.balls--
-				this.getComponent(GunTimer).waiting  = true
-				if(this.gun.balls === 0){
-					this.gun.addComponent(new utils.Delay(1500, () =>{
-						this.getComponent(GunTimer).waiting  = false
-					}))
-				} else {
-					this.gun.addComponent(new utils.Delay(500, () =>{
-						this.getComponent(GunTimer).waiting  = false
-					}))
+				} 
+				
+				// Manage Target in shoot
+				if(e.hit){
+					let hitEntity = engine.entities[e.hit.entityId]
+					log('e.hit : ',hitEntity)
+					// log('this.getComponent(GunTimer).waiting : ',this.getComponent(GunTimer).waiting)
+					if(hitEntity !== undefined){
+						log('e.hit.getComponent(TargetFlag) : ',hitEntity.getComponent(TargetFlag))
+						if(hitEntity.getComponent(TargetFlag) !== undefined ){
+							hitEntity.hitTarget()
+						}
+					}
 				}
 			}
 		})
 	}
-	
-	// shoot(){
-	
-	// }
 	
 	removeLife(){
 		this.life -= 1

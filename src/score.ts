@@ -10,11 +10,11 @@ export class Score extends Entity {
 		this.setParent(game)
 		this.score = 0
 		// this.addComponent(new PlaneShape())
-		this.addComponent(new Transform({position: new Vector3(0,5,-15.5), scale: new Vector3(1,1,1), rotation: Quaternion.Euler(0, 180, 0)}))
+		this.addComponent(new Transform({position: new Vector3(-5.35,6.25,-4), scale: new Vector3(1,1,1), rotation: Quaternion.Euler(0, 180, 0)}))
 		// this.getComponent(Transform).rotation.eulerAngles = new Vector3(0,180,0)
 		this.displayedScore = new TextShape(this.score.toString())
 		this.displayedScore.color = Color3.Red()
-		this.displayedScore.fontSize = 30
+		this.displayedScore.fontSize = 10
 		this.addComponent(this.displayedScore)
 	}
 	

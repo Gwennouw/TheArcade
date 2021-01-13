@@ -28,15 +28,17 @@ export class Gun extends Entity {
 		
 		this.addComponent(new Animator())
 		this.gunShoot = new AnimationState('weaponshoot')
-		this.gunLoad = new AnimationState('weaponload')
-		this.getComponent(Animator).addClip(this.gunShoot)
-		this.getComponent(Animator).addClip(this.gunLoad)
+		this.gunLoad = new AnimationState('weaponreload')
 		this.gunShoot.looping = false
 		this.gunLoad.looping = false
+		this.gunShoot.speed = 1
+		this.gunLoad.speed = 1.6
 		this.gunShoot.stop()
 		this.gunLoad.stop()
 		this.gunShoot.reset()
 		this.gunLoad.reset()
+		this.getComponent(Animator).addClip(this.gunShoot)
+		this.getComponent(Animator).addClip(this.gunLoad)
 		
 		// UI
 		this.ballsContainer = new UIContainerStack(canvas)
@@ -64,7 +66,8 @@ export class Gun extends Entity {
 		
 		this.generateBallsIcons()
 		const gunPos = new Vector3((this.player.camera.position.x+0.5),(this.player.camera.position.y-0.5),(this.player.camera.position.z+0.5))
-		this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,1,0,1)}))
+		// this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,1,0,1)}))
+		this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,0,0,0)}))
 		engine.addEntity(this)
 	}
 	
@@ -78,11 +81,13 @@ export class Gun extends Entity {
 		this.balls = 6
 		this.ballsVisible = 6
 		this.generateBallsIcons()
+		this.getComponent(GLTFShape).visible = true
 		engine.addSystem(this.ballsSystem)
 		engine.addSystem(this.gunSystem)
 	}
 	
 	stop(){
+		this.getComponent(GLTFShape).visible = false
 		engine.removeSystem(this.ballsSystem)
 		engine.removeSystem(this.gunSystem)
 		// engine.removeEntity(this)
@@ -99,34 +104,17 @@ class GunSystem implements ISystem {
 	
 	update(dt: number) {
 		let gunPos = new Vector3()
-		if(this.player.camera.rotation.eulerAngles.y >= 0 && this.player.camera.rotation.eulerAngles.y <= 90){
-			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
-			gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.y))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.y))))
-		} 
-		// else if(this.player.camera.rotation.eulerAngles.y > 90 && this.player.camera.rotation.eulerAngles.y <= 180){
-			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
-		// }
-		// else if(this.player.camera.rotation.eulerAngles.y > 180 && this.player.camera.rotation.eulerAngles.y <= 270){
-			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
-		// } 
-		// else if(this.player.camera.rotation.eulerAngles.y > 270 && this.player.camera.rotation.eulerAngles.y <= 360){
-			// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(0.5*Math.cos(this.player.camera.rotation.eulerAngles.y*(180/Math.PI)))))
-		// }
+		// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(-0.5*Math.cos(this.player.camera.rotation.eulerAngles.y))))
+		gunPos = new Vector3((this.player.camera.position.x+(1*Math.sin(this.player.camera.rotation.y))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(1*Math.cos(this.player.camera.rotation.y))))
 		
-		if(this.player.gun.getComponent(Transform).position.x !== gunPos.x && this.player.gun.getComponent(Transform).position.y !== gunPos.y){
-			// log('******')
-			// log('player pos : ',this.player.camera.position)
-			// log('gun pos : ',gunPos)
-			// log('******')
-			this.player.gun.getComponent(Transform).position = gunPos
-		}
+		this.player.gun.getComponent(Transform).position = gunPos
 		
 		const gunRot = new Vector3((this.player.camera.rotation.eulerAngles.x),(this.player.camera.rotation.eulerAngles.y),(this.player.camera.rotation.eulerAngles.z))
 		if(this.player.gun.getComponent(Transform).rotation.eulerAngles.y !== gunRot.y){
-			// log('player rot.euler : ',this.player.camera.rotation.eulerAngles)
-			// log('player rot : ',this.player.camera.rotation)
-			// log('gun rot : ',gunRot)
-			// log('******')
+			log('player rot : ',this.player.camera.rotation)
+			log('player rot.euler : ',this.player.camera.rotation.eulerAngles)
+			log('gun rot : ',gunRot)
+			log('******')
 			this.player.gun.getComponent(Transform).rotation.eulerAngles = gunRot
 		}
 	}
@@ -134,7 +122,6 @@ class GunSystem implements ISystem {
 
 export class BallsSystem implements ISystem {
 	gun: Gun
-	// removedIconsBalls: UIImage
 
 	constructor(gun) {
 		this.gun = gun

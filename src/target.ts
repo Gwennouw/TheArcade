@@ -22,6 +22,7 @@ export class Target extends Entity {
 		this.game = game
 		this.setParent(this.game)
 		this.valueScore = value
+		// this.addComponent(new BoxShape())
 		this.addComponent(new GLTFShape('models/target1.glb'))
 		this.animator = new Animator()
 		this.addComponent(this.animator)
@@ -74,22 +75,7 @@ export class Target extends Entity {
 			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
 			this.direction = 'left'
 		}
-		
-		// Hit a target
-		// this.addComponent(
-			// new OnPointerDown((e) => {
-				// log("myEntity was clicked", e)
-				// this.hitClip.play()
-				// this.hitClipCollider.play()
-				// this.game.score.addScore(this.valueScore)
-				// this.displayScore(true)
-				// this.addComponentOrReplace(new utils.Delay(1000, () =>{
-					// engine.removeEntity(this)
-				// }))
-				// this.removeComponent(OnPointerDown)
-			// }, {distance: 35})
-		// )
-		
+				
 		// Target is not hit
 		this.addComponent(new utils.Delay(3000, () =>{
 			log('perdu')
