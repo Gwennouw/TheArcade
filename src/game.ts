@@ -39,10 +39,6 @@ export class Game extends Entity {
 			},{hoverText: "Play"})
 		)
 		engine.addEntity(this.starter)
-		if(this.player === undefined){
-			this.player = new Player(this,this.canvas)
-		}
-		this.player.start()
 	}
 
 	start(){
@@ -82,13 +78,10 @@ export class GameSystem implements ISystem {
 	}
 	update(dt: number) {
 		if(this.game.started === true && this.game.starter.getComponent(BoxShape).isPointerBlocker == true){
-			// log('this.game.starter.getComponent(BoxShape).visible : ',this.game.starter.getComponent(BoxShape).visible)
-			// this.game.starter.getComponent(BoxShape).isPointerBlocker = false
 			this.game.starter.getComponent(BoxShape).visible = false
 		}
 		if(this.game.player.life <= 0 && this.game.started === true){
 			this.game.stop()
-			// if(this.game.starter)
 		}
 	}
 }

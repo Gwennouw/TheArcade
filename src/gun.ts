@@ -24,8 +24,6 @@ export class Gun extends Entity {
 		this.player = player
 		this.balls = 6
 		this.ballsVisible = 6
-		// this.setParent(Attachable.AVATAR)
-		// this.setParent(this.player)
 		this.gunSystem = new GunSystem(this.player)
 		this.ballsSystem = new BallsSystem(this)
 		this.addComponent(new GLTFShape('models/weapon.glb'))
@@ -85,7 +83,7 @@ export class Gun extends Entity {
 			this.ballsIcons.push(uiimage)
 		}
 		
-		const gunImage = "images/weaponHUD.old.png"
+		const gunImage = "images/weaponHUD.png"
 		this.gunIconTexture = new Texture(gunImage)
 		this.gunIcon = new UIImage(this.gunContainer, this.gunIconTexture)
 		this.gunIcon.sourceLeft = 0
