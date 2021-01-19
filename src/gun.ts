@@ -105,6 +105,10 @@ export class Gun extends Entity {
 		// this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,1,0,1)}))
 		this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,0,0,0)}))
 		engine.addEntity(this)
+		this.getComponent(Transform).position = Vector3.Zero()
+		this.getComponent(Transform).rotation = Quaternion.Zero()
+		// let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
+		// this.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
 	}
 	
 	generateBallsIcons(){
@@ -139,10 +143,11 @@ class GunSystem implements ISystem {
 	}
 	
 	update(dt: number) {
-		this.player.gun.getComponent(Transform).position = Vector3.Zero()
-		this.player.gun.getComponent(Transform).rotation = Quaternion.Zero()
-		let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
-		this.player.gun.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
+		// this.player.gun.getComponent(Transform).position = Vector3.Zero()
+		// this.player.gun.getComponent(Transform).rotation = Quaternion.Zero()
+		// let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
+		this.player.gun.getComponent(Transform).position = this.player.camera.position.clone().add(Vector3.Forward().rotate(this.player.camera.rotation))
+		// this.player.gun.getComponent(Transform).position = forwardVector
 		this.player.gun.getComponent(Transform).position.y = 1.25
 		
 		const gunRot = new Vector3((this.player.camera.rotation.eulerAngles.x),(this.player.camera.rotation.eulerAngles.y),(this.player.camera.rotation.eulerAngles.z))
