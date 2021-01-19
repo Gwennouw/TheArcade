@@ -9,9 +9,12 @@ export class Gun extends Entity {
 	player: Player
 	balls: number
 	ballsVisible: number
+	gunContainer: UIContainerStack
 	ballsContainer: UIContainerStack
 	ballsIcons: Array<UIImage>
 	ballIconTexture: Texture
+	gunIconTexture: Texture
+	gunIcon: UIImage
 	
 	constructor(player: Player, canvas: UICanvas){
 		super()
@@ -21,6 +24,7 @@ export class Gun extends Entity {
 		this.player = player
 		this.balls = 6
 		this.ballsVisible = 6
+		// this.setParent(Attachable.AVATAR)
 		// this.setParent(this.player)
 		this.gunSystem = new GunSystem(this.player)
 		this.ballsSystem = new BallsSystem(this)
@@ -41,28 +45,62 @@ export class Gun extends Entity {
 		this.getComponent(Animator).addClip(this.gunLoad)
 		
 		// UI
+		this.gunContainer = new UIContainerStack(canvas)
+		this.gunContainer.width = '20%'
+		this.gunContainer.height = '100%'
+		this.gunContainer.adaptHeight = true
+		this.gunContainer.adaptWidth = true
+		this.gunContainer.positionX = '0%'
+		this.gunContainer.positionY = '0%'		
+		this.gunContainer.hAlign = "right"
+		this.gunContainer.vAlign = "bottom"
+		this.gunContainer.stackOrientation = UIStackOrientation.VERTICAL
+		
 		this.ballsContainer = new UIContainerStack(canvas)
 		this.ballsContainer.width = '20%'
-		this.ballsContainer.height = 320
-		this.ballsContainer.positionX = '0%'
-		this.ballsContainer.positionY = '-30%'		
+		this.ballsContainer.height = 55
+		this.ballsContainer.adaptHeight = true
+		this.ballsContainer.adaptWidth = true
+		this.ballsContainer.positionX = -180
+		this.ballsContainer.positionY = '28%'
 		this.ballsContainer.hAlign = "right"
-		this.ballsContainer.vAlign = "top"
-		this.ballsContainer.stackOrientation = UIStackOrientation.VERTICAL
-		// log('ballsContainer : ',this.ballsContainer)
-		let ballIcon = "images/bullet.png"
+		this.ballsContainer.vAlign = "bottom"
+		this.ballsContainer.stackOrientation = UIStackOrientation.HORIZONTAL
+		const ballIcon = "images/bulletHUD.png"
 		this.ballIconTexture = new Texture(ballIcon)
 		this.ballsIcons = []
-		
+				
 		for(let i=0;i<this.balls;i++){
 			const uiimage = new UIImage(this.ballsContainer, this.ballIconTexture)
 			uiimage.sourceLeft = 0
 			uiimage.sourceTop = 0
-			uiimage.sourceWidth = 64
-			uiimage.sourceHeight = 64
-			uiimage.paddingBottom = 5
+			uiimage.sourceWidth = 27
+			uiimage.sourceHeight = 55
+			uiimage.width = 64
+			uiimage.height = 64
+			uiimage.paddingTop = 0
+			uiimage.paddingLeft = 16
+			uiimage.paddingRight = 16
+			uiimage.paddingBottom = 0
 			this.ballsIcons.push(uiimage)
 		}
+		
+		const gunImage = "images/weaponHUD.old.png"
+		this.gunIconTexture = new Texture(gunImage)
+		this.gunIcon = new UIImage(this.gunContainer, this.gunIconTexture)
+		this.gunIcon.sourceLeft = 0
+		this.gunIcon.sourceTop = 0
+		this.gunIcon.hAlign = "right"
+		this.gunIcon.vAlign = "bottom"
+		this.gunIcon.sourceWidth = 1920
+		this.gunIcon.sourceHeight = 1080
+		this.gunIcon.width = 360
+		this.gunIcon.height = 203
+		this.gunIcon.paddingTop = 0
+		this.gunIcon.paddingLeft = 0
+		this.gunIcon.paddingRight = 0
+		this.gunIcon.paddingBottom = 0
+		
 		
 		this.generateBallsIcons()
 		const gunPos = new Vector3((this.player.camera.position.x+0.5),(this.player.camera.position.y-0.5),(this.player.camera.position.z+0.5))
@@ -103,18 +141,14 @@ class GunSystem implements ISystem {
 	}
 	
 	update(dt: number) {
-		let gunPos = new Vector3()
-		// gunPos = new Vector3((this.player.camera.position.x+(0.5*Math.sin(this.player.camera.rotation.eulerAngles.y))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(-0.5*Math.cos(this.player.camera.rotation.eulerAngles.y))))
-		gunPos = new Vector3((this.player.camera.position.x+(1*Math.sin(this.player.camera.rotation.y))),(this.player.camera.position.y-0.5),(this.player.camera.position.z+(1*Math.cos(this.player.camera.rotation.y))))
-		
-		this.player.gun.getComponent(Transform).position = gunPos
+		this.player.gun.getComponent(Transform).position = Vector3.Zero()
+		this.player.gun.getComponent(Transform).rotation = Quaternion.Zero()
+		let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
+		this.player.gun.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
+		this.player.gun.getComponent(Transform).position.y = 1.25
 		
 		const gunRot = new Vector3((this.player.camera.rotation.eulerAngles.x),(this.player.camera.rotation.eulerAngles.y),(this.player.camera.rotation.eulerAngles.z))
 		if(this.player.gun.getComponent(Transform).rotation.eulerAngles.y !== gunRot.y){
-			log('player rot : ',this.player.camera.rotation)
-			log('player rot.euler : ',this.player.camera.rotation.eulerAngles)
-			log('gun rot : ',gunRot)
-			log('******')
 			this.player.gun.getComponent(Transform).rotation.eulerAngles = gunRot
 		}
 	}

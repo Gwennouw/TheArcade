@@ -34,14 +34,15 @@ export class Player extends Entity {
 		// UI
 		this.canvas = canvas
 		this.lifesContainer = new UIContainerStack(this.canvas)
-		this.lifesContainer.width = '20%'
-		this.lifesContainer.height = '100%'
-		this.lifesContainer.positionX = '1%'
-		this.lifesContainer.positionY = '-30%'		
+		this.lifesContainer.width = '100%'
+		// this.lifesContainer.adaptWidth = true
+		this.lifesContainer.height = 64
+		this.lifesContainer.positionX = '2%'
+		this.lifesContainer.positionY = '0%'		
 		this.lifesContainer.hAlign = "left"
-		this.lifesContainer.vAlign = "top"
-		this.lifesContainer.stackOrientation = UIStackOrientation.VERTICAL
-		let healthIcon = "images/healthIcon64.png"
+		this.lifesContainer.vAlign = "bottom"
+		this.lifesContainer.stackOrientation = UIStackOrientation.HORIZONTAL
+		let healthIcon = "images/lifeHUD.png"
 		let healthIconTexture = new Texture(healthIcon)
 		this.lifeIcons = []
 		
@@ -51,7 +52,10 @@ export class Player extends Entity {
 			uiimage.sourceTop = 0
 			uiimage.sourceWidth = 64
 			uiimage.sourceHeight = 64
-			uiimage.paddingBottom = 5
+			uiimage.paddingTop = 0
+			uiimage.paddingLeft = 16
+			uiimage.paddingRight = 16
+			uiimage.paddingBottom = 0
 			this.lifeIcons.push(uiimage)
 		}
 		
