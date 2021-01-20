@@ -110,20 +110,16 @@ export class GameSystem implements ISystem {
 			if(timer.timeLeft > 0 && timer.timeLeft !== dt){
 				timer.timeLeft -= dt
 				if(Math.ceil(timer.timeLeft) !== this.game.startCounter.read()){
-					log('this.game.startCounter.read() : ',this.game.startCounter.read())
-					log('timer : ',timer)
-					log('Math.ceil(timer) : ',Math.ceil(timer.timeLeft))
+					// log('this.game.startCounter.read() : ',this.game.startCounter.read())
+					// log('timer : ',timer)
+					// log('Math.ceil(timer) : ',Math.ceil(timer.timeLeft))
 					this.game.startCounter.decrease(Math.ceil(dt))
 				}
 			} else {
 				timer.timeLeft = timer.totalTime
 				this.game.startCounter.set(timer.totalTime)
 				this.game.startCounter.uiText.visible = false
-				log('uiCounter : ',this.game.startCounter)
-				// this.game.removeComponent(timer)
-				// this.game.startCounter=null
-				// this.game.startCounter=null
-				// engine.removeEntity(this.game.startCounter)
+				// log('uiCounter : ',this.game.startCounter)
 			}
 		}
 	}

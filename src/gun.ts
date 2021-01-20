@@ -24,7 +24,6 @@ export class Gun extends Entity {
 		this.player = player
 		this.balls = 6
 		this.ballsVisible = 6
-		// this.gunSystem = new GunSystem(this.player)
 		this.ballsSystem = new BallsSystem(this)
 		this.addComponent(new GLTFShape('models/weapon.glb'))
 		
@@ -46,22 +45,21 @@ export class Gun extends Entity {
 		this.gunContainer = new UIContainerStack(canvas)
 		this.gunContainer.width = '20%'
 		this.gunContainer.height = '100%'
-		this.gunContainer.adaptHeight = true
-		this.gunContainer.adaptWidth = true
+		// this.gunContainer.adaptHeight = true
+		// this.gunContainer.adaptWidth = true
 		this.gunContainer.positionX = '0%'
 		this.gunContainer.positionY = '0%'		
 		this.gunContainer.hAlign = "right"
 		this.gunContainer.vAlign = "bottom"
 		this.gunContainer.stackOrientation = UIStackOrientation.VERTICAL
 		
-		this.ballsContainer = new UIContainerStack(canvas)
+		this.ballsContainer = new UIContainerStack(this.gunContainer)
 		this.ballsContainer.width = '20%'
 		this.ballsContainer.height = 55
-		this.ballsContainer.adaptHeight = true
-		this.ballsContainer.adaptWidth = true
-		this.ballsContainer.positionX = -180
-		this.ballsContainer.positionY = '28%'
-		this.ballsContainer.hAlign = "right"
+		// this.ballsContainer.adaptHeight = true
+		this.ballsContainer.positionX = 0
+		this.ballsContainer.positionY = -35
+		this.ballsContainer.hAlign = "left"
 		this.ballsContainer.vAlign = "bottom"
 		this.ballsContainer.stackOrientation = UIStackOrientation.HORIZONTAL
 		const ballIcon = "images/bulletHUD.png"
@@ -99,20 +97,14 @@ export class Gun extends Entity {
 		this.gunIcon.paddingRight = 0
 		this.gunIcon.paddingBottom = 0
 		
-		
 		this.generateBallsIcons()
 		
-		// const gunPos = new Vector3(0,0,1)
-		// const gunPos = new Vector3(0,0,0)
-		// this.addComponent(new Transform({position: gunPos, rotation: new Quaternion(0,0,0,0)}))
 		this.addComponent(new Transform())
 		this.getComponent(Transform).position = Vector3.Zero()
-		// this.getComponent(Transform).position = gunPos
 		this.getComponent(Transform).rotation = Quaternion.Zero()
 		this.getComponent(Transform).position.x += 1
 		this.getComponent(Transform).position.z += 1
 		this.setParent(Attachable.AVATAR)
-		// log('Attachable.AVATAR : ',Attachable.AVATAR)
 		engine.addEntity(this)
 		let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
 		this.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
@@ -129,42 +121,17 @@ export class Gun extends Entity {
 		this.ballsVisible = 6
 		this.generateBallsIcons()
 		this.getComponent(GLTFShape).visible = true
+		this.gunContainer.visible = true
 		engine.addSystem(this.ballsSystem)
-		// engine.addSystem(this.gunSystem)
 	}
 	
 	stop(){
 		this.getComponent(GLTFShape).visible = false
+		this.gunContainer.visible = false
 		engine.removeSystem(this.ballsSystem)
 		engine.removeSystem(this.gunSystem)
-		// engine.removeEntity(this)
 	}
 }
-
-
-// class GunSystem implements ISystem {
-	// player: Player
-
-	// constructor(player) {
-		// this.player = player
-	// }
-	
-	// update(dt: number) {
-		// let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
-		// if(this.player.gun.getComponent(Transform).position !== this.player.camera.position.clone().add(forwardVector))){
-			// this.player.gun.getComponent(Transform).position = Vector3.Zero()
-			// this.player.gun.getComponent(Transform).rotation = Quaternion.Zero()
-			// this.player.gun.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector))
-		// }
-		// this.player.gun.getComponent(Transform).position = forwardVector
-		// this.player.gun.getComponent(Transform).position.y = 1.25
-		
-		// const gunRot = new Vector3((this.player.camera.rotation.eulerAngles.x),(this.player.camera.rotation.eulerAngles.y),(this.player.camera.rotation.eulerAngles.z))
-		// if(this.player.gun.getComponent(Transform).rotation.eulerAngles.y !== gunRot.y){
-			// this.player.gun.getComponent(Transform).rotation.eulerAngles = gunRot
-		// }
-	// }
-// }
 
 export class BallsSystem implements ISystem {
 	gun: Gun
