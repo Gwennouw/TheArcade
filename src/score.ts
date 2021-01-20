@@ -23,6 +23,11 @@ export class Score extends Entity {
 		this.displayedScore.value = this.score.toString()
 	}
 	
+	removeScore(value: number){
+		this.score -= value
+		this.displayedScore.value = this.score.toString()
+	}
+	
 	resetScore(){
 		this.score = 0
 		this.displayedScore.value = this.score.toString()

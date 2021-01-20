@@ -14,21 +14,30 @@ export class Target extends Entity {
 	hitClipCollider: AnimationState
 	direction: string
 	
-	constructor(game: any, originSide: number, value:number){
+	constructor(game: any, originSide: number, touchable: boolean, value:number){
 		super()
 		engine.addEntity(this)
 		
 		// Initialization
 		this.game = game
+		this.touchable = touchable
 		this.setParent(this.game)
 		this.valueScore = value
-		// this.addComponent(new BoxShape())
-		this.addComponent(new GLTFShape('models/target1.glb'))
-		this.animator = new Animator()
-		this.addComponent(this.animator)
-		this.addComponent(new TargetFlag())
-		this.hitClip = new AnimationState('target1Hit')
-		this.hitClipCollider = new AnimationState('target1Hit_collider')
+		if(touchable === true){
+			this.addComponent(new GLTFShape('models/target1.glb'))
+			this.animator = new Animator()
+			this.addComponent(this.animator)
+			this.addComponent(new TargetFlag())
+			this.hitClip = new AnimationState('target1Hit')
+			this.hitClipCollider = new AnimationState('target1Hit_collider')
+		} else {
+			this.addComponent(new GLTFShape('models/target2.glb'))
+			this.animator = new Animator()
+			this.addComponent(this.animator)
+			this.addComponent(new TargetFlag())
+			this.hitClip = new AnimationState('target2Hit')
+			this.hitClipCollider = new AnimationState('target2Hit_collider')
+		}
 		this.hitClip.looping = false
 		this.hitClip.stop()
 		this.hitClip.reset()
@@ -79,7 +88,7 @@ export class Target extends Entity {
 		// Target is not hit
 		this.addComponent(new utils.Delay(3000, () =>{
 			log('perdu')
-			this.displayScore(false)
+			this.displayLife()
 			this.getComponent(GLTFShape).visible = false
 			this.game.player.removeLife()
 			this.addComponentOrReplace(new utils.Delay(2000, () =>{
@@ -91,8 +100,13 @@ export class Target extends Entity {
 	hitTarget(){
 		this.hitClip.play()
 		this.hitClipCollider.play()
-		this.game.score.addScore(this.valueScore)
-		this.displayScore(true)
+		if(this.touchable === true){
+			this.game.score.addScore(this.valueScore)
+			this.displayScore(true)
+		} else {
+			this.game.score.removeScore(this.valueScore)
+			this.displayScore(false)
+		}
 		this.addComponentOrReplace(new utils.Delay(1000, () =>{
 			engine.removeEntity(this)
 		}))
@@ -108,9 +122,32 @@ export class Target extends Entity {
 			text.value = '+'+this.valueScore.toString()+' pts'
 			text.color = Color3.Green()
 		} else {
-			text.value = '-'+this.valueScore.toString()+' life'
+			text.value = '-'+this.valueScore.toString()+' pts'
 			text.color = Color3.Red()
 		}
+		text.fontSize = 10
+		score.addComponent(text)
+		engine.addEntity(score)
+		if(this.direction === 'right'){
+			score.addComponent(new utils.MoveTransformComponent(new Vector3(0,1,0), new Vector3(-2,2,0),2, () => {
+				engine.removeEntity(score)
+			}))
+		} else {
+			score.addComponent(new utils.MoveTransformComponent(new Vector3(0,1,0), new Vector3(2,2,0),2, () => {
+				engine.removeEntity(score)
+			}))
+		}
+	}
+	
+	displayLife(){
+		const score = new Entity()
+		score.setParent(this)
+		score.addComponent(new Transform({position: new Vector3(0,1,0)}))
+		score.getComponent(Transform).rotation.eulerAngles = new Vector3(0,180,0)
+		const text = new TextShape()
+		text.value = '-'+this.valueScore.toString()+' life'
+		text.color = Color3.Red()
+		
 		text.fontSize = 10
 		score.addComponent(text)
 		engine.addEntity(score)

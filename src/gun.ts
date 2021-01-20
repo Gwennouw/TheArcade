@@ -56,9 +56,8 @@ export class Gun extends Entity {
 		this.ballsContainer = new UIContainerStack(this.gunContainer)
 		this.ballsContainer.width = '20%'
 		this.ballsContainer.height = 55
-		// this.ballsContainer.adaptHeight = true
 		this.ballsContainer.positionX = 0
-		this.ballsContainer.positionY = -35
+		this.ballsContainer.positionY = -30
 		this.ballsContainer.hAlign = "left"
 		this.ballsContainer.vAlign = "bottom"
 		this.ballsContainer.stackOrientation = UIStackOrientation.HORIZONTAL

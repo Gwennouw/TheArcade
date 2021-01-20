@@ -55,7 +55,15 @@ export class Game extends Entity {
 		)
 		engine.addEntity(this.starter)
 	}
-
+	
+	touchable(random: number){
+		if(random === 0){
+			return false
+		} else {
+			return true
+		}
+	}
+	
 	start(){
 		if(this.player === undefined){
 			this.player = new Player(this,this.canvas)
@@ -65,8 +73,11 @@ export class Game extends Entity {
 				this.started = true
 				this.addComponent(
 					new utils.Interval(1000, () => {
-						const random = Math.floor(Math.random() * Math.floor(6));
-						const target = new Target(this,random,1)
+						const randomPos = Math.floor(Math.random() * Math.floor(6));
+						const randomTouchy = Math.floor(Math.random() * Math.floor(5));
+						const touchable = this.touchable(randomTouchy)
+						log('touchable : ',touchable)
+						const target = new Target(this,randomPos,touchable,1)
 						this.targets.push(target)
 					})
 				)
@@ -80,7 +91,6 @@ export class Game extends Entity {
 	}
 	
 	stop(){
-		// const textScore = 'Your score is : '+this.score
 		ui.displayAnnouncement('Your score is : '+this.score.score+' points', 5, true, Color4.Red(), 50, true)
 		this.player.stop()
 		this.starter.getComponent(BoxShape).visible = true
@@ -110,16 +120,12 @@ export class GameSystem implements ISystem {
 			if(timer.timeLeft > 0 && timer.timeLeft !== dt){
 				timer.timeLeft -= dt
 				if(Math.ceil(timer.timeLeft) !== this.game.startCounter.read()){
-					// log('this.game.startCounter.read() : ',this.game.startCounter.read())
-					// log('timer : ',timer)
-					// log('Math.ceil(timer) : ',Math.ceil(timer.timeLeft))
 					this.game.startCounter.decrease(Math.ceil(dt))
 				}
 			} else {
 				timer.timeLeft = timer.totalTime
 				this.game.startCounter.set(timer.totalTime)
 				this.game.startCounter.uiText.visible = false
-				// log('uiCounter : ',this.game.startCounter)
 			}
 		}
 	}
