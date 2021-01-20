@@ -24,7 +24,7 @@ export class Gun extends Entity {
 		this.player = player
 		this.balls = 6
 		this.ballsVisible = 6
-		this.gunSystem = new GunSystem(this.player)
+		// this.gunSystem = new GunSystem(this.player)
 		this.ballsSystem = new BallsSystem(this)
 		this.addComponent(new GLTFShape('models/weapon.glb'))
 		
@@ -108,11 +108,11 @@ export class Gun extends Entity {
 		this.addComponent(new Transform())
 		this.getComponent(Transform).position = Vector3.Zero()
 		// this.getComponent(Transform).position = gunPos
+		this.getComponent(Transform).rotation = Quaternion.Zero()
 		this.getComponent(Transform).position.x += 1
 		this.getComponent(Transform).position.z += 1
-		this.getComponent(Transform).rotation = Quaternion.Zero()
 		this.setParent(Attachable.AVATAR)
-		log('Attachable.AVATAR : ',Attachable.AVATAR)
+		// log('Attachable.AVATAR : ',Attachable.AVATAR)
 		engine.addEntity(this)
 		let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
 		this.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
@@ -130,7 +130,7 @@ export class Gun extends Entity {
 		this.generateBallsIcons()
 		this.getComponent(GLTFShape).visible = true
 		engine.addSystem(this.ballsSystem)
-		engine.addSystem(this.gunSystem)
+		// engine.addSystem(this.gunSystem)
 	}
 	
 	stop(){
@@ -142,14 +142,14 @@ export class Gun extends Entity {
 }
 
 
-class GunSystem implements ISystem {
-	player: Player
+// class GunSystem implements ISystem {
+	// player: Player
 
-	constructor(player) {
-		this.player = player
-	}
+	// constructor(player) {
+		// this.player = player
+	// }
 	
-	update(dt: number) {
+	// update(dt: number) {
 		// let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
 		// if(this.player.gun.getComponent(Transform).position !== this.player.camera.position.clone().add(forwardVector))){
 			// this.player.gun.getComponent(Transform).position = Vector3.Zero()
@@ -163,8 +163,8 @@ class GunSystem implements ISystem {
 		// if(this.player.gun.getComponent(Transform).rotation.eulerAngles.y !== gunRot.y){
 			// this.player.gun.getComponent(Transform).rotation.eulerAngles = gunRot
 		// }
-	}
-}
+	// }
+// }
 
 export class BallsSystem implements ISystem {
 	gun: Gun

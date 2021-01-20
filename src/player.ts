@@ -1,6 +1,7 @@
 import utils from 'node_modules/decentraland-ecs-utils/index'
 import { Gun } from './gun'
 import { TargetFlag } from './target'
+import { Game } from './game'
 
 @Component('gunTimer')
 export class GunTimer{
@@ -22,7 +23,7 @@ export class Player extends Entity {
 	camera: Camera
 	input: Input
 	
-	constructor(parent: Entity, canvas: UICanvas){
+	constructor(parent: Game, canvas: UICanvas){
 		super()
 		engine.addEntity(this)
 		this.setParent(parent)
@@ -63,7 +64,7 @@ export class Player extends Entity {
 		this.gun = new Gun(this, this.canvas)
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
 			// Manage Gun in shoot
-			if(this.getComponent(GunTimer).waiting  === false){
+			if(this.getComponent(GunTimer).waiting  === false && parent.started === true){
 				this.gun.gunShoot.play()
 				this.getComponent(GunTimer).waiting = true
 				if(this.gun.balls !== 0){
