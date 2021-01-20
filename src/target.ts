@@ -94,12 +94,14 @@ export class Target extends Entity {
 		// Target is not hit
 		this.addComponent(new utils.Delay(3000, () =>{
 			log('perdu')
-			this.displayLife()
-			this.getComponent(GLTFShape).visible = false
-			this.game.player.removeLife()
-			this.addComponentOrReplace(new utils.Delay(2000, () =>{
-				engine.removeEntity(this)
-			}))
+			if(this.touchable === true){
+				this.displayLife()
+				this.getComponent(GLTFShape).visible = false
+				this.game.player.removeLife()
+				this.addComponentOrReplace(new utils.Delay(2000, () =>{
+					engine.removeEntity(this)
+				}))
+			}
 		}))
 	}
 	
