@@ -13,6 +13,7 @@ export class Target extends Entity {
 	hitClip: AnimationState
 	hitClipCollider: AnimationState
 	direction: string
+	hitSound: AudioSource
 	
 	constructor(game: any, originSide: number, touchable: boolean, value:number){
 		super()
@@ -23,6 +24,11 @@ export class Target extends Entity {
 		this.touchable = touchable
 		this.setParent(this.game)
 		this.valueScore = value
+		
+		const clipHit = new AudioClip("sounds/Targethit.wav")
+		this.hitSound = new AudioSource(clipHit)
+		this.addComponent(this.hitSound)
+		
 		if(touchable === true){
 			this.addComponent(new GLTFShape('models/target1.glb'))
 			this.animator = new Animator()
@@ -100,6 +106,7 @@ export class Target extends Entity {
 	hitTarget(){
 		this.hitClip.play()
 		this.hitClipCollider.play()
+		this.hitSound.playOnce()
 		if(this.touchable === true){
 			this.game.score.addScore(this.valueScore)
 			this.displayScore(true)

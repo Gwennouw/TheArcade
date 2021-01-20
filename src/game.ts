@@ -91,10 +91,10 @@ export class Game extends Entity {
 	}
 	
 	stop(){
+		this.started = false
 		ui.displayAnnouncement('Your score is : '+this.score.score+' points', 5, true, Color4.Red(), 50, true)
 		this.player.stop()
 		this.starter.getComponent(BoxShape).visible = true
-		this.started = false
 		this.canvas.visible = false
 		this.removeComponent(utils.Interval)
 		engine.removeSystem(this.system)

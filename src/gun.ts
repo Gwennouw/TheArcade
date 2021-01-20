@@ -15,6 +15,8 @@ export class Gun extends Entity {
 	ballIconTexture: Texture
 	gunIconTexture: Texture
 	gunIcon: UIImage
+	Eshoot: Entity
+	Ereload: Entity
 	
 	constructor(player: Player, canvas: UICanvas){
 		super()
@@ -26,6 +28,20 @@ export class Gun extends Entity {
 		this.ballsVisible = 6
 		this.ballsSystem = new BallsSystem(this)
 		this.addComponent(new GLTFShape('models/weapon.glb'))
+		
+		// Sounds
+		this.Eshoot = new Entity()
+		this.Eshoot.setParent(this)
+		engine.addEntity(this.Eshoot)
+		this.Ereload = new Entity()
+		this.Ereload.setParent(this)
+		engine.addEntity(this.Ereload)		
+		const clipShoot = new AudioClip("sounds/shoot.mp3")
+		const shootSound = new AudioSource(clipShoot)
+		this.Eshoot.addComponent(shootSound)
+		const clipReload = new AudioClip("sounds/reload.mp3")
+		const reloadSound = new AudioSource(clipReload)
+		this.Ereload.addComponent(reloadSound)
 		
 		this.addComponent(new Animator())
 		this.gunShoot = new AnimationState('weaponshoot')

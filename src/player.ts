@@ -66,6 +66,7 @@ export class Player extends Entity {
 			// Manage Gun in shoot
 			if(this.getComponent(GunTimer).waiting  === false && parent.started === true){
 				this.gun.gunShoot.play()
+				this.gun.Eshoot.getComponent(AudioSource).playOnce()
 				this.getComponent(GunTimer).waiting = true
 				if(this.gun.balls !== 0){
 					this.gun.balls--
@@ -81,6 +82,7 @@ export class Player extends Entity {
 						this.gun.gunShoot.stop()
 						this.gun.gunShoot.reset()
 						this.gun.gunLoad.play()
+						this.gun.Ereload.getComponent(AudioSource).playOnce()
 						log('Reaload !')
 						log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
 						this.gun.addComponentOrReplace(new utils.Delay(1250, () =>{
