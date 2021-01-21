@@ -27,7 +27,8 @@ export class Target extends Entity {
 		this.valueScore = value
 		this.test = test
 		
-		const clipHit = new AudioClip("sounds/Targethit.wav")
+		// const clipHit = new AudioClip("sounds/Targethit.wav")
+		const clipHit = new AudioClip("sounds/shoot.wav")
 		this.hitSound = new AudioSource(clipHit)
 		this.addComponent(this.hitSound)
 		this.animator = new Animator()
