@@ -14,8 +14,9 @@ export class Target extends Entity {
 	hitClipCollider: AnimationState
 	direction: string
 	hitSound: AudioSource
+	test: boolean
 	
-	constructor(game: any, originSide: number, touchable: boolean, value:number){
+	constructor(game: any, originSide: number, touchable: boolean, value:number, test?: boolean){
 		super()
 		engine.addEntity(this)
 		
@@ -24,6 +25,7 @@ export class Target extends Entity {
 		this.touchable = touchable
 		this.setParent(this.game)
 		this.valueScore = value
+		this.test = test
 		
 		const clipHit = new AudioClip("sounds/Targethit.wav")
 		this.hitSound = new AudioSource(clipHit)
@@ -51,6 +53,8 @@ export class Target extends Entity {
 		this.hitClipCollider.reset()
 		this.animator.addClip(this.hitClipCollider)
 		
+		if(!this.test){
+		log('is test')
 		if(originSide == 0){
 			const StartPos = new Vector3(-7.5,1,-15)
 			const EndPos = new Vector3(7.5,1,-15)
@@ -90,17 +94,18 @@ export class Target extends Entity {
 		}
 				
 		// Target is not hit
-		this.addComponent(new utils.Delay(3000, () =>{
-			log('perdu')
-			if(this.touchable === true){
-				this.displayLife()
-				this.getComponent(GLTFShape).visible = false
-				this.game.player.removeLife()
-				this.addComponentOrReplace(new utils.Delay(2000, () =>{
-					engine.removeEntity(this)
-				}))
-			}
-		}))
+			this.addComponent(new utils.Delay(3000, () =>{
+				log('perdu')
+				if(this.touchable === true){
+					this.displayLife()
+					this.getComponent(GLTFShape).visible = false
+					this.game.player.removeLife()
+					this.addComponentOrReplace(new utils.Delay(2000, () =>{
+						engine.removeEntity(this)
+					}))
+				}
+			}))
+		}
 	}
 	
 	hitTarget(){

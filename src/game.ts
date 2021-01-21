@@ -134,6 +134,10 @@ export class GameSystem implements ISystem {
 }
 
 const game = new Game()
+const triggerTarget1 = new Target(game,0,true,1,true)
+const triggerTarget2 = new Target(game,0,false,1,true)
+triggerTarget1.getComponent(GLTFShape).visible = false
+triggerTarget2.getComponent(GLTFShape).visible = false
 
 const wall = new Entity()
 engine.addEntity(wall)
