@@ -28,19 +28,16 @@ export class Target extends Entity {
 		const clipHit = new AudioClip("sounds/Targethit.wav")
 		this.hitSound = new AudioSource(clipHit)
 		this.addComponent(this.hitSound)
+		this.animator = new Animator()
+		this.addComponent(this.animator)
+		this.addComponent(new TargetFlag())
 		
 		if(touchable === true){
 			this.addComponent(new GLTFShape('models/target1.glb'))
-			this.animator = new Animator()
-			this.addComponent(this.animator)
-			this.addComponent(new TargetFlag())
 			this.hitClip = new AnimationState('target1Hit')
 			this.hitClipCollider = new AnimationState('target1Hit_collider')
 		} else {
 			this.addComponent(new GLTFShape('models/target2.glb'))
-			this.animator = new Animator()
-			this.addComponent(this.animator)
-			this.addComponent(new TargetFlag())
 			this.hitClip = new AnimationState('target2Hit')
 			this.hitClipCollider = new AnimationState('target2Hit_collider')
 		}
@@ -48,6 +45,7 @@ export class Target extends Entity {
 		this.hitClip.stop()
 		this.hitClip.reset()
 		this.animator.addClip(this.hitClip)
+		
 		this.hitClipCollider.looping = false
 		this.hitClipCollider.stop()
 		this.hitClipCollider.reset()

@@ -36,7 +36,6 @@ export class Player extends Entity {
 		this.canvas = canvas
 		this.lifesContainer = new UIContainerStack(this.canvas)
 		this.lifesContainer.width = '100%'
-		// this.lifesContainer.adaptWidth = true
 		this.lifesContainer.height = 64
 		this.lifesContainer.positionX = '2%'
 		this.lifesContainer.positionY = '0%'		
@@ -97,7 +96,6 @@ export class Player extends Entity {
 				if(e.hit){
 					let hitEntity = engine.entities[e.hit.entityId]
 					log('e.hit : ',hitEntity)
-					// log('this.getComponent(GunTimer).waiting : ',this.getComponent(GunTimer).waiting)
 					if(hitEntity !== undefined){
 						log('e.hit.getComponent(TargetFlag) : ',hitEntity.getComponent(TargetFlag))
 						if(hitEntity.getComponent(TargetFlag) !== undefined ){

@@ -63,8 +63,6 @@ export class Gun extends Entity {
 		this.gunContainer = new UIContainerStack(canvas)
 		this.gunContainer.width = '20%'
 		this.gunContainer.height = '100%'
-		// this.gunContainer.adaptHeight = true
-		// this.gunContainer.adaptWidth = true
 		this.gunContainer.positionX = '0%'
 		this.gunContainer.positionY = '0%'		
 		this.gunContainer.hAlign = "right"

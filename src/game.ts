@@ -28,6 +28,7 @@ export class Game extends Entity {
 	started: boolean = false
 	system: ISystem
 	startCounter: ui.UICounter
+	timeToStart: number
 	
 	constructor(){
 		super()
@@ -35,13 +36,14 @@ export class Game extends Entity {
 		this.canvas = new UICanvas()
 		this.targets = []
 		this.difficultyRate = 1
+		this.timeToStart = 5
 		this.decor = new GLTFShape('models/base.glb')
 		this.addComponent(this.decor)
 		this.addComponent(new Transform({position: new Vector3(16,0,8), rotation: new Quaternion(0,1,0,-1)}))
 		this.score = new Score(this)
 		this.addComponent(new GameFlag())
-		this.addComponent(new Timer(3))
-		this.startCounter = new ui.UICounter(3, '-50%', '50%', Color4.Red(), 70, true)
+		this.addComponent(new Timer(this.timeToStart))
+		this.startCounter = new ui.UICounter(this.timeToStart, '-50%', '50%', Color4.Red(), 70, true)
 		this.startCounter.uiText.visible = false
 		
 		this.starter = new Entity()
@@ -69,7 +71,7 @@ export class Game extends Entity {
 			this.player = new Player(this,this.canvas)
 		}
 		this.starter.addComponent(
-			new utils.Delay(3000, () => {
+			new utils.Delay(this.timeToStart * 1000, () => {
 				this.started = true
 				this.addComponent(
 					new utils.Interval(1000, () => {
