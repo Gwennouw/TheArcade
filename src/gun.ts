@@ -123,9 +123,9 @@ export class Gun extends Entity {
 		let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
 		this.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
 		
-		engine.addEntity(this)
 		engine.addEntity(this.Eshoot)
 		engine.addEntity(this.Ereload)
+		engine.addEntity(this)
 	}
 	
 	generateBallsIcons(){
