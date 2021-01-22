@@ -31,18 +31,20 @@ export class Gun extends Entity {
 		
 		// Sounds
 		this.Eshoot = new Entity()
-		this.Eshoot.setParent(this)
+		// this.Eshoot.setParent(this)
 		engine.addEntity(this.Eshoot)
 		this.Ereload = new Entity()
-		this.Ereload.setParent(this)
-		engine.addEntity(this.Ereload)		
+		// this.Ereload.setParent(this)
+		engine.addEntity(this.Ereload)
+		
 		const clipShoot = new AudioClip("sounds/shoot.wav")
 		const shootSound = new AudioSource(clipShoot)
-		// shootSound.playing = false
+		shootSound.playing = false
 		this.Eshoot.addComponent(shootSound)
+		
 		const clipReload = new AudioClip("sounds/reload.wav")
 		const reloadSound = new AudioSource(clipReload)
-		// reloadSound.playing = false
+		reloadSound.playing = false
 		this.Ereload.addComponent(reloadSound)
 		
 		this.addComponent(new Animator())
