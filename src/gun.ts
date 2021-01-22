@@ -20,6 +20,7 @@ export class Gun extends Entity {
 	
 	constructor(player: Player, canvas: UICanvas){
 		super()
+		engine.addEntity(this)
 		
 		// Initialization
 		this.player = player
@@ -31,8 +32,10 @@ export class Gun extends Entity {
 		// Sounds
 		this.Eshoot = new Entity()
 		this.Eshoot.setParent(this)
+		engine.addEntity(this.Eshoot)
 		this.Ereload = new Entity()
 		this.Ereload.setParent(this)
+		engine.addEntity(this.Ereload)
 		
 		const clipShoot = new AudioClip("sounds/shoot.wav")
 		const shootSound = new AudioSource(clipShoot)
@@ -122,10 +125,6 @@ export class Gun extends Entity {
 		engine.addEntity(this)
 		let forwardVector: Vector3 = Vector3.Forward().rotate(this.player.camera.rotation)
 		this.getComponent(Transform).position = this.player.camera.position.clone().add(forwardVector)
-		
-		engine.addEntity(this.Eshoot)
-		engine.addEntity(this.Ereload)
-		engine.addEntity(this)
 	}
 	
 	generateBallsIcons(){
