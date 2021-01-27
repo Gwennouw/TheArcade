@@ -157,13 +157,13 @@ wall.getComponent(PlaneShape).visible = false
 wall.getComponent(PlaneShape).isPointerBlocker = false
 
 const ad1 = new Advertisement(game,'ad1')
-const ad1 = new Advertisement(game,'ad2')
-const ad1 = new Advertisement(game,'ad3')
-const ad1 = new Advertisement(game,'ad4')
-const ad1 = new Advertisement(game,'ad5')
-const ad1 = new Advertisement(game,'ad6')
-const ad1 = new Advertisement(game,'ad7')
-const ad1 = new Advertisement(game,'ad8')
+const ad2 = new Advertisement(game,'ad2')
+const ad3 = new Advertisement(game,'ad3')
+const ad4 = new Advertisement(game,'ad4')
+const ad5 = new Advertisement(game,'ad5')
+const ad6 = new Advertisement(game,'ad6')
+const ad7 = new Advertisement(game,'ad7')
+const ad8 = new Advertisement(game,'ad8')
 // reference position for the leader board
 // const boardParent = new Entity()
 // boardParent.addComponent(
