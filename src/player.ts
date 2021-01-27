@@ -99,7 +99,9 @@ export class Player extends Entity {
 					if(hitEntity !== undefined){
 						log('e.hit.getComponent(TargetFlag) : ',hitEntity.getComponent(TargetFlag))
 						if(hitEntity.getComponent(TargetFlag) !== undefined ){
-							hitEntity.hitTarget()
+							this.addComponentOrReplace(new utils.Delay(250, () =>{
+								hitEntity.hitTarget()
+							}))
 						}
 					}
 				}
