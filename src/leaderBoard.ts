@@ -38,7 +38,7 @@ export class ScoreBoardText extends Entity {
         break
       case TextTypes.BIGVALUE:
         shape.fontSize = 3
-        shape.color = Color3.Green()
+        shape.color = Color3.Red()
         shape.vTextAlign = 'center'
         shape.font = TiltleFont
         break
@@ -65,13 +65,13 @@ export class ScoreBoardText extends Entity {
         break
       case TextTypes.VALUE:
         shape.fontSize = 3
-        shape.color = Color3.Green()
+        shape.color = Color3.Red()
         shape.vTextAlign = 'right'
         shape.font = SFFont
         break
       case TextTypes.TINYVALUE:
         shape.fontSize = 2
-        shape.color = Color3.Green()
+        shape.color = Color3.Red()
         shape.vTextAlign = 'right'
         shape.font = SFFont
         break
