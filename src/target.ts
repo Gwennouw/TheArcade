@@ -112,17 +112,20 @@ export class Target extends Entity {
 	hitTarget(){
 		this.hitClip.play()
 		this.hitClipCollider.play()
-		this.hitSound.playOnce()
-		if(this.touchable === true){
-			this.game.score.addScore(this.valueScore)
-			this.displayScore(true)
-		} else {
-			this.game.score.removeScore(this.valueScore)
-			this.displayScore(false)
-		}
-		this.addComponentOrReplace(new utils.Delay(1000, () =>{
-			engine.removeEntity(this)
+		this.addComponentOrReplace(new utils.Delay(500, () =>{
+			this.hitSound.playOnce()
+			if(this.touchable === true){
+				this.game.score.addScore(this.valueScore)
+				this.displayScore(true)
+			} else {
+				this.game.score.removeScore(this.valueScore)
+				this.displayScore(false)
+			}
+			this.addComponentOrReplace(new utils.Delay(1000, () =>{
+				engine.removeEntity(this)
+			}))
 		}))
+		
 	}
 	
 	displayScore(bonus){
