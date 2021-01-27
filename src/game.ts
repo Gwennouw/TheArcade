@@ -156,20 +156,20 @@ wall.getComponent(PlaneShape).visible = false
 wall.getComponent(PlaneShape).isPointerBlocker = false
 
 // reference position for the leader board
-const boardParent = new Entity()
-boardParent.addComponent(
-  new Transform(
-    new Transform({
-      position: new Vector3(13, 4, 0.5),
-      rotation: Quaternion.Euler(0, 180, 0),
-    })
-  )
-)
-engine.addEntity(boardParent)
+// const boardParent = new Entity()
+// boardParent.addComponent(
+  // new Transform(
+    // new Transform({
+      // position: new Vector3(13, 4, 0.5),
+      // rotation: Quaternion.Euler(0, 180, 0),
+    // })
+  // )
+// )
+// engine.addEntity(boardParent)
 
-async function updateBoard() {
-  let scoreData: any = await getScoreBoard() // data.scoreBoard
-  buildLeaderBoard(scoreData, boardParent, 9)
-}
+// async function updateBoard() {
+  // let scoreData: any = await getScoreBoard() // data.scoreBoard
+  // buildLeaderBoard(scoreData, boardParent, 9)
+// }
 
-updateBoard()
+// updateBoard()
