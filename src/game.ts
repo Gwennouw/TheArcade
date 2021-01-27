@@ -2,6 +2,7 @@ import utils from "../node_modules/decentraland-ecs-utils/index"
 import { Target } from './target'
 import { Score } from './score'
 import { Player } from './player'
+import { Advertisement } from './ad'
 import * as ui from '../node_modules/@dcl/ui-utils/index'
 import { buildLeaderBoard } from './leaderBoard'
 import { publishScore, getScoreBoard } from './serverHandler'
@@ -155,6 +156,14 @@ wall.addComponent(new PlaneShape())
 wall.getComponent(PlaneShape).visible = false
 wall.getComponent(PlaneShape).isPointerBlocker = false
 
+const ad1 = new Advertisement(game,'ad1')
+const ad1 = new Advertisement(game,'ad2')
+const ad1 = new Advertisement(game,'ad3')
+const ad1 = new Advertisement(game,'ad4')
+const ad1 = new Advertisement(game,'ad5')
+const ad1 = new Advertisement(game,'ad6')
+const ad1 = new Advertisement(game,'ad7')
+const ad1 = new Advertisement(game,'ad8')
 // reference position for the leader board
 // const boardParent = new Entity()
 // boardParent.addComponent(
