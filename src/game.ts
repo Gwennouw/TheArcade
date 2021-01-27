@@ -54,9 +54,15 @@ export class Game extends Entity {
 		this.starter.addComponent(
 			new OnPointerDown((e) => {
 				this.start()
+				this.starter.getComponent(GLTFShape).visible = false
 				this.startCounter.uiText.visible = true
 			},{hoverText: "Play"})
 		)
+		this.starter.addComponent(new Animator())
+		const clipArrow = new AnimationState("arrow")
+		this.starter.getComponent(Animator).addClip(clipArrow)
+		clipArrow.looping = true
+		clipArrow.play()
 		engine.addEntity(this.starter)
 	}
 	
@@ -113,9 +119,9 @@ export class GameSystem implements ISystem {
 		this.game = game
 	}
 	update(dt: number) {
-		if(this.game.started === true && this.game.starter.getComponent(GLTFShape).isPointerBlocker == true){
-			this.game.starter.getComponent(GLTFShape).visible = false
-		}
+		// if(this.game.started === true && this.game.starter.getComponent(GLTFShape).isPointerBlocker == true){
+			// this.game.starter.getComponent(GLTFShape).visible = false
+		// }
 		if(this.game.player.life <= 0 && this.game.started === true){
 			this.game.stop()
 		}
