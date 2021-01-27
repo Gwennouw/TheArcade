@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@dcl/ui-utils": "^1.6.3",
-    "decentraland-ecs-utils": "^1.1.9"
+    "cors": "^2.8.5",
+    "decentraland-ecs-utils": "^1.1.9",
+    "express": "^4.17.1"
   }
 }

@@ -3,6 +3,8 @@ import { Target } from './target'
 import { Score } from './score'
 import { Player } from './player'
 import * as ui from '../node_modules/@dcl/ui-utils/index'
+import { buildLeaderBoard } from './leaderBoard'
+import { publishScore, getScoreBoard } from './serverHandler'
 
 @Component('gameFlag')
 export class GameFlag {}
@@ -47,8 +49,8 @@ export class Game extends Entity {
 		this.startCounter.uiText.visible = false
 		
 		this.starter = new Entity()
-		this.starter.addComponent(new BoxShape())
-		this.starter.addComponent(new Transform({position: new Vector3(12,0.75,12), scale:new Vector3(0.25,1,0.25)}))
+		this.starter.addComponent(new GLTFShape('models/start.glb'))
+		this.starter.addComponent(new Transform({position: new Vector3(12,1,8), scale:new Vector3(0.25,0.25,0.25)}))
 		this.starter.addComponent(
 			new OnPointerDown((e) => {
 				this.start()
@@ -96,7 +98,7 @@ export class Game extends Entity {
 		this.started = false
 		ui.displayAnnouncement('Your score is : '+this.score.score+' points', 5, true, Color4.Red(), 50, true)
 		this.player.stop()
-		this.starter.getComponent(BoxShape).visible = true
+		this.starter.getComponent(GLTFShape).visible = true
 		this.canvas.visible = false
 		this.removeComponent(utils.Interval)
 		engine.removeSystem(this.system)
@@ -111,8 +113,8 @@ export class GameSystem implements ISystem {
 		this.game = game
 	}
 	update(dt: number) {
-		if(this.game.started === true && this.game.starter.getComponent(BoxShape).isPointerBlocker == true){
-			this.game.starter.getComponent(BoxShape).visible = false
+		if(this.game.started === true && this.game.starter.getComponent(GLTFShape).isPointerBlocker == true){
+			this.game.starter.getComponent(GLTFShape).visible = false
 		}
 		if(this.game.player.life <= 0 && this.game.started === true){
 			this.game.stop()
@@ -146,3 +148,22 @@ wall.addComponent(new Transform({position: new Vector3(0,4,5), scale: new Vector
 wall.addComponent(new PlaneShape())
 wall.getComponent(PlaneShape).visible = false
 wall.getComponent(PlaneShape).isPointerBlocker = false
+
+// reference position for the leader board
+const boardParent = new Entity()
+boardParent.addComponent(
+  new Transform(
+    new Transform({
+      position: new Vector3(13, 4, 0.5),
+      rotation: Quaternion.Euler(0, 180, 0),
+    })
+  )
+)
+engine.addEntity(boardParent)
+
+async function updateBoard() {
+  let scoreData: any = await getScoreBoard() // data.scoreBoard
+  buildLeaderBoard(scoreData, boardParent, 9)
+}
+
+updateBoard()
