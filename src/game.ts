@@ -107,9 +107,10 @@ export class Game extends Entity {
 		this.player.stop()
 		publishScore(this.score.score)
 		this.addComponent(
-			new utils.Delay(this.timeToStart * 1000, () => {
+			new utils.Delay(3000, () => {
 				updateBoard()
 			})
+		)
 		this.starter.getComponent(GLTFShape).visible = true
 		this.canvas.visible = false
 		this.removeComponent(utils.Interval)

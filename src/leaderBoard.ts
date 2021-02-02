@@ -52,7 +52,7 @@ export class ScoreBoardText extends Entity {
         break
       case TextTypes.TINYTITLE:
         shape.fontSize = 2
-        shape.color = Color3.White()
+        shape.color = Color3.Black()
         shape.vTextAlign = 'center'
         shape.width = 10
         shape.font = SFFont

@@ -30,22 +30,7 @@ export class Gun extends Entity {
 		this.addComponent(new GLTFShape('models/weapon.glb'))
 		
 		// Sounds
-		this.Eshoot = new Entity()
-		this.Eshoot.setParent(this)
-		engine.addEntity(this.Eshoot)
-		this.Ereload = new Entity()
-		this.Ereload.setParent(this)
-		engine.addEntity(this.Ereload)
 		
-		const clipShoot = new AudioClip("sounds/shoot.wav")
-		const shootSound = new AudioSource(clipShoot)
-		shootSound.playing = false
-		this.Eshoot.addComponent(shootSound)
-		
-		const clipReload = new AudioClip("sounds/reload.wav")
-		const reloadSound = new AudioSource(clipReload)
-		reloadSound.playing = false
-		this.Ereload.addComponent(reloadSound)
 		
 		this.addComponent(new Animator())
 		this.gunShoot = new AnimationState('weaponshoot')
@@ -134,6 +119,23 @@ export class Gun extends Entity {
 	}
 	
 	start(){
+		this.Eshoot = new Entity()
+		this.Eshoot.setParent(this)
+		engine.addEntity(this.Eshoot)
+		this.Ereload = new Entity()
+		this.Ereload.setParent(this)
+		engine.addEntity(this.Ereload)
+		
+		const clipShoot = new AudioClip("sounds/shoot.wav")
+		const shootSound = new AudioSource(clipShoot)
+		shootSound.playing = false
+		this.Eshoot.addComponent(shootSound)
+		
+		const clipReload = new AudioClip("sounds/reload.wav")
+		const reloadSound = new AudioSource(clipReload)
+		reloadSound.playing = false
+		this.Ereload.addComponent(reloadSound)
+		
 		this.balls = 6
 		this.ballsVisible = 6
 		this.generateBallsIcons()
@@ -143,6 +145,8 @@ export class Gun extends Entity {
 	}
 	
 	stop(){
+		engine.removeEntity(this.Eshoot)
+		engine.removeEntity(this.Ereload)
 		this.getComponent(GLTFShape).visible = false
 		this.gunContainer.visible = false
 		engine.removeSystem(this.ballsSystem)
