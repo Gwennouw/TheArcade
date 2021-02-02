@@ -57,7 +57,6 @@ app.post("/publish-scores", async (req: any, res: any) => {
           await scoreBoard
               .doc("/" + Math.floor(Math.random() * 1000) + "/")
               .create({
-                id: newScore.id,
                 name: newScore.name,
                 score: newScore.score,
               });

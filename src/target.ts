@@ -55,7 +55,7 @@ export class Target extends Entity {
 		this.animator.addClip(this.hitClipCollider)
 		
 		if(!this.test){
-		log('is test')
+		// log('is test')
 		if(originSide == 0){
 			const StartPos = new Vector3(-7.5,1,-15)
 			const EndPos = new Vector3(7.5,1,-15)
@@ -96,7 +96,7 @@ export class Target extends Entity {
 				
 		// Target is not hit
 			this.addComponent(new utils.Delay(3000, () =>{
-				log('perdu')
+				// log('perdu')
 				if(this.touchable === true){
 					this.displayLife()
 					this.getComponent(GLTFShape).visible = false

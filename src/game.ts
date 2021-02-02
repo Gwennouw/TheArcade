@@ -87,7 +87,7 @@ export class Game extends Entity {
 						const randomPos = Math.floor(Math.random() * Math.floor(6));
 						const randomTouchy = Math.floor(Math.random() * Math.floor(5));
 						const touchable = this.touchable(randomTouchy)
-						log('touchable : ',touchable)
+						// log('touchable : ',touchable)
 						const target = new Target(this,randomPos,touchable,1)
 						this.targets.push(target)
 					})
@@ -105,6 +105,11 @@ export class Game extends Entity {
 		this.started = false
 		ui.displayAnnouncement('Your score is : '+this.score.score+' points', 5, true, Color4.Red(), 50, true)
 		this.player.stop()
+		publishScore(this.score.score)
+		this.addComponent(
+			new utils.Delay(this.timeToStart * 1000, () => {
+				updateBoard()
+			})
 		this.starter.getComponent(GLTFShape).visible = true
 		this.canvas.visible = false
 		this.removeComponent(utils.Interval)
@@ -164,21 +169,22 @@ const ad5 = new Advertisement(game,'ad5')
 const ad6 = new Advertisement(game,'ad6')
 const ad7 = new Advertisement(game,'ad7')
 const ad8 = new Advertisement(game,'ad8')
+
 // reference position for the leader board
-// const boardParent = new Entity()
-// boardParent.addComponent(
-  // new Transform(
-    // new Transform({
-      // position: new Vector3(13, 4, 0.5),
-      // rotation: Quaternion.Euler(0, 180, 0),
-    // })
-  // )
-// )
-// engine.addEntity(boardParent)
+const boardParent = new Entity()
+boardParent.addComponent(
+  new Transform(
+    new Transform({
+      position: new Vector3(13, 4, 0.5),
+      rotation: Quaternion.Euler(0, 180, 0),
+    })
+  )
+)
+engine.addEntity(boardParent)
 
-// async function updateBoard() {
-  // let scoreData: any = await getScoreBoard() // data.scoreBoard
-  // buildLeaderBoard(scoreData, boardParent, 9)
-// }
+async function updateBoard() {
+  let scoreData: any = await getScoreBoard() // data.scoreBoard
+  buildLeaderBoard(scoreData, boardParent, 9)
+}
 
-// updateBoard()
+updateBoard()

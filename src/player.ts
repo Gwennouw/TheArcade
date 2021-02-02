@@ -63,15 +63,15 @@ export class Player extends Entity {
 		this.gun = new Gun(this, this.canvas)
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
 			// Manage Gun in shoot
-			if(this.getComponent(GunTimer).waiting  === false && parent.started === true){
-				this.gun.gunShoot.play()
+			if(!this.getComponent(GunTimer).waiting && parent.started){
 				this.gun.Eshoot.getComponent(AudioSource).playOnce()
+				this.gun.gunShoot.play()
 				this.getComponent(GunTimer).waiting = true
 				if(this.gun.balls !== 0){
 					this.gun.balls--
-					log('Shoot !')
+					// log('Shoot !')
 					this.gun.addComponent(new utils.Delay(250, () =>{
-						log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
+						// log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
 						this.getComponent(GunTimer).waiting  = false
 						this.gun.gunShoot.stop()
 						this.gun.gunShoot.reset()
@@ -82,8 +82,8 @@ export class Player extends Entity {
 						this.gun.gunShoot.reset()
 						this.gun.gunLoad.play()
 						this.gun.Ereload.getComponent(AudioSource).playOnce()
-						log('Reaload !')
-						log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
+						// log('Reaload !')
+						// log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
 						this.gun.addComponentOrReplace(new utils.Delay(1250, () =>{
 							this.getComponent(GunTimer).waiting  = false
 							this.gun.gunLoad.stop()
@@ -95,9 +95,9 @@ export class Player extends Entity {
 				// Manage Target in shoot
 				if(e.hit){
 					let hitEntity = engine.entities[e.hit.entityId]
-					log('e.hit : ',hitEntity)
+					// log('e.hit : ',hitEntity)
 					if(hitEntity !== undefined){
-						log('e.hit.getComponent(TargetFlag) : ',hitEntity.getComponent(TargetFlag))
+						// log('e.hit.getComponent(TargetFlag) : ',hitEntity.getComponent(TargetFlag))
 						if(hitEntity.getComponent(TargetFlag) !== undefined ){
 							hitEntity.hitTarget()
 						}
