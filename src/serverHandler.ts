@@ -3,7 +3,6 @@ import { getUserData } from '@decentraland/Identity'
 // get player data
 const userData = executeTask(async () => {
   const data = await getUserData()
-  log(data.displayName)
   return data
 })
 
@@ -17,7 +16,6 @@ export async function getScoreBoard() {
     let url = fireBaseServer + 'get-scores'
     let response = await fetch(url)
     let json = await response.json()
-    log(json)
     return json
   } catch (e) {
     log('error fetching scores from server ', e)
@@ -35,7 +33,6 @@ export async function publishScore(score: number) {
       name: (await userData).displayName,
       score: score,
     })
-    log(body)
     let response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -54,7 +51,6 @@ export async function getAds() {
 		
 		let response = await fetch(url)
 		let json = await response.json()
-		log(json)
 		return json
 	} catch(e) {
 		log('error fetching ads from server ', e)
