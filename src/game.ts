@@ -5,7 +5,7 @@ import { Player } from './player'
 import { Advertisement } from './ad'
 import * as ui from '../node_modules/@dcl/ui-utils/index'
 import { buildLeaderBoard } from './leaderBoard'
-import { publishScore, getScoreBoard } from './serverHandler'
+import { publishScore, getScoreBoard, getAds } from './serverHandler'
 
 @Component('gameFlag')
 export class GameFlag {}
@@ -126,9 +126,6 @@ export class GameSystem implements ISystem {
 		this.game = game
 	}
 	update(dt: number) {
-		// if(this.game.started === true && this.game.starter.getComponent(GLTFShape).isPointerBlocker == true){
-			// this.game.starter.getComponent(GLTFShape).visible = false
-		// }
 		if(this.game.player.life <= 0 && this.game.started === true){
 			this.game.stop()
 		}
@@ -162,14 +159,6 @@ wall.addComponent(new PlaneShape())
 wall.getComponent(PlaneShape).visible = false
 wall.getComponent(PlaneShape).isPointerBlocker = false
 
-const ad1 = new Advertisement(game,'ad1')
-const ad2 = new Advertisement(game,'ad2')
-const ad3 = new Advertisement(game,'ad3')
-const ad4 = new Advertisement(game,'ad4')
-const ad5 = new Advertisement(game,'ad5')
-const ad6 = new Advertisement(game,'ad6')
-const ad7 = new Advertisement(game,'ad7')
-const ad8 = new Advertisement(game,'ad8')
 
 // reference position for the leader board
 const boardParent = new Entity()
@@ -185,7 +174,33 @@ engine.addEntity(boardParent)
 
 async function updateBoard() {
   let scoreData: any = await getScoreBoard() // data.scoreBoard
-  buildLeaderBoard(scoreData, boardParent, 9)
+  buildLeaderBoard(scoreData, boardParent, 10)
+}
+async function updateAds() {
+	let adData: any = []
+	// executeTask(async () => {
+		adData = await getAds()
+		// log('adData[1]',await adData[1])
+		// log('adData[2]',await adData[2])
+	// })
+		const ad1 = new Advertisement(game,'ad1',adData[0])
+		const ad2 = new Advertisement(game,'ad2',adData[1])
+		const ad3 = new Advertisement(game,'ad3',adData[2])
+		const ad4 = new Advertisement(game,'ad4',adData[3])
+		const ad5 = new Advertisement(game,'ad5',adData[4])
+		const ad6 = new Advertisement(game,'ad6',adData[5])
+		const ad7 = new Advertisement(game,'ad7',adData[6])
+		const ad8 = new Advertisement(game,'ad8',adData[7])
 }
 
+updateAds()
 updateBoard()
+
+const streamSource = new Entity()
+engine.addEntity(streamSource)
+const webRadio = new AudioStream(
+	"https://radio.nia.nc/radio/8020/lofi-hq-stream.aac"
+)
+webRadio.volume = 0.1
+
+streamSource.addComponent(webRadio)

@@ -126,7 +126,7 @@ export class Gun extends Entity {
 		this.Ereload.setParent(this)
 		engine.addEntity(this.Ereload)
 		
-		const clipShoot = new AudioClip("sounds/shoot.wav")
+		const clipShoot = new AudioClip("sounds/shoot.mp3")
 		const shootSound = new AudioSource(clipShoot)
 		shootSound.playing = false
 		this.Eshoot.addComponent(shootSound)

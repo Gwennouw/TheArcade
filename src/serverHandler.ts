@@ -47,3 +47,16 @@ export async function publishScore(score: number) {
     log('error posting to server ', e)
   }
 }
+
+export async function getAds() {
+	try {
+		let url = fireBaseServer + 'get-ads'
+		
+		let response = await fetch(url)
+		let json = await response.json()
+		log(json)
+		return json
+	} catch(e) {
+		log('error fetching ads from server ', e)
+	}
+}

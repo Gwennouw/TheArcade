@@ -2,7 +2,7 @@
 export class Advertisement extends Entity {
 	name: string
 	
-	constructor(parent:Entity, name:string){
+	constructor(parent:Entity, name:string, url: string){
 		super()
 		this.setParent(parent)
 		engine.addEntity(this)
@@ -12,7 +12,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(10, 7, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 90, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -21,7 +21,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(10, 7, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 90, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -30,7 +30,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(10, 7, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 90, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -39,7 +39,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(10, 7, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 270, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -48,7 +48,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(10, 7, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 270, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -57,7 +57,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(10, 7, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 270, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -66,7 +66,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(14.8, 16.95, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 180, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)
@@ -75,7 +75,7 @@ export class Advertisement extends Entity {
 			this.getComponent(Transform).scale.set(14.8, 16.95, 1)
 			this.getComponent(Transform).rotation.setEuler(0, 0, 180)
 			this.addComponent(new PlaneShape())
-			const textureAd = new Texture('images/ads/'+this.name+'.jpg')
+			const textureAd = new Texture(url)
 			const materialAd = new Material()
 			materialAd.albedoTexture = textureAd
 			this.addComponent(materialAd)

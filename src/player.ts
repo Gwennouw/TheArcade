@@ -64,14 +64,12 @@ export class Player extends Entity {
 		this.input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
 			// Manage Gun in shoot
 			if(!this.getComponent(GunTimer).waiting && parent.started){
-				this.gun.Eshoot.getComponent(AudioSource).playOnce()
-				this.gun.gunShoot.play()
 				this.getComponent(GunTimer).waiting = true
+				this.gun.gunShoot.play()
+				this.gun.Eshoot.getComponent(AudioSource).playOnce()
 				if(this.gun.balls !== 0){
 					this.gun.balls--
-					// log('Shoot !')
 					this.gun.addComponent(new utils.Delay(250, () =>{
-						// log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
 						this.getComponent(GunTimer).waiting  = false
 						this.gun.gunShoot.stop()
 						this.gun.gunShoot.reset()
@@ -82,8 +80,6 @@ export class Player extends Entity {
 						this.gun.gunShoot.reset()
 						this.gun.gunLoad.play()
 						this.gun.Ereload.getComponent(AudioSource).playOnce()
-						// log('Reaload !')
-						// log('this.gun.getComponent(utils.Delay) !',this.gun.getComponent(utils.Delay))
 						this.gun.addComponentOrReplace(new utils.Delay(1250, () =>{
 							this.getComponent(GunTimer).waiting  = false
 							this.gun.gunLoad.stop()
