@@ -55,46 +55,46 @@ export class Target extends Entity {
 		this.animator.addClip(this.hitClipCollider)
 		
 		if(!this.test){
-		// log('is test')
-		if(originSide == 0){
-			const StartPos = new Vector3(-7.5,1,-15)
-			const EndPos = new Vector3(7.5,1,-15)
-			this.addComponent(new Transform({position: new Vector3(-7.5,1,-15), scale: new Vector3(1,1,1)}))
-			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
-			this.direction = 'right'
-		} else if (originSide == 1) {
-			const StartPos = new Vector3(7.5,1,-15)
-			const EndPos = new Vector3(-7.5,1,-15)
-			this.addComponent(new Transform({position: new Vector3(7.5,1,-15), scale: new Vector3(1,1,1)}))	
-			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
-			this.direction = 'left'
-		} else if (originSide == 2) {
-			const StartPos = new Vector3(-7.5,1,-8)
-			const EndPos = new Vector3(7.5,1,-8)
-			this.addComponent(new Transform({position: new Vector3(7.5,1,-8), scale: new Vector3(1,1,1)}))	
-			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
-			this.direction = 'right'
-		} else if (originSide == 3) {
-			const StartPos = new Vector3(7.5,1,-8)
-			const EndPos = new Vector3(-7.5,1,-8)
-			this.addComponent(new Transform({position: new Vector3(7.5,1,-8), scale: new Vector3(1,1,1)}))	
-			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
-			this.direction = 'left'
-		} else if (originSide == 4) {
-			const StartPos = new Vector3(-7.5,1,-3)
-			const EndPos = new Vector3(7.5,1,-3)
-			this.addComponent(new Transform({position: new Vector3(7.5,1,-3), scale: new Vector3(1,1,1)}))	
-			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
-			this.direction = 'right'
-		} else if (originSide == 5) {
-			const StartPos = new Vector3(7.5,1,-3)
-			const EndPos = new Vector3(-7.5,1,-3)
-			this.addComponent(new Transform({position: new Vector3(7.5,1,-3), scale: new Vector3(1,1,1)}))	
-			this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
-			this.direction = 'left'
-		}
-				
-		// Target is not hit
+			// log('is test')
+			if(originSide == 0){
+				const StartPos = new Vector3(-7.5,1,-15)
+				const EndPos = new Vector3(7.5,1,-15)
+				this.addComponent(new Transform({position: new Vector3(-7.5,1,-15), scale: new Vector3(1,1,1)}))
+				this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
+				this.direction = 'right'
+			} else if (originSide == 1) {
+				const StartPos = new Vector3(7.5,1,-15)
+				const EndPos = new Vector3(-7.5,1,-15)
+				this.addComponent(new Transform({position: new Vector3(7.5,1,-15), scale: new Vector3(1,1,1)}))	
+				this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
+				this.direction = 'left'
+			} else if (originSide == 2) {
+				const StartPos = new Vector3(-7.5,1,-8)
+				const EndPos = new Vector3(7.5,1,-8)
+				this.addComponent(new Transform({position: new Vector3(7.5,1,-8), scale: new Vector3(1,1,1)}))	
+				this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
+				this.direction = 'right'
+			} else if (originSide == 3) {
+				const StartPos = new Vector3(7.5,1,-8)
+				const EndPos = new Vector3(-7.5,1,-8)
+				this.addComponent(new Transform({position: new Vector3(7.5,1,-8), scale: new Vector3(1,1,1)}))	
+				this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
+				this.direction = 'left'
+			} else if (originSide == 4) {
+				const StartPos = new Vector3(-7.5,1,-3)
+				const EndPos = new Vector3(7.5,1,-3)
+				this.addComponent(new Transform({position: new Vector3(7.5,1,-3), scale: new Vector3(1,1,1)}))	
+				this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
+				this.direction = 'right'
+			} else if (originSide == 5) {
+				const StartPos = new Vector3(7.5,1,-3)
+				const EndPos = new Vector3(-7.5,1,-3)
+				this.addComponent(new Transform({position: new Vector3(7.5,1,-3), scale: new Vector3(1,1,1)}))	
+				this.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 3))
+				this.direction = 'left'
+			}
+					
+			// Target is not hit
 			this.addComponentOrReplace(new utils.Delay(3000, () =>{
 				// log('perdu')
 				if(this.touchable === true){
