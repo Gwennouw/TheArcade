@@ -1,6 +1,6 @@
-import utils from 'node_modules/decentraland-ecs-utils/index'
+import * as utils from '@dcl/ecs-scene-utils'
 import { Gun } from './gun'
-import { TargetFlag } from './target'
+import { Target, TargetFlag } from './target'
 import { Game } from './game'
 
 @Component('gunTimer')
@@ -90,11 +90,12 @@ export class Player extends Entity {
 				
 				// Manage Target in shoot
 				if(e.hit){
-					let hitEntity = engine.entities[e.hit.entityId]
+					let hitIEntity = engine.entities[e.hit.entityId]
 					// log('e.hit : ',hitEntity)
-					if(hitEntity !== undefined){
+					if(hitIEntity !== undefined){
 						// log('e.hit.getComponent(TargetFlag) : ',hitEntity.getComponent(TargetFlag))
-						if(hitEntity.getComponent(TargetFlag) !== undefined ){
+						if(hitIEntity.getComponent(TargetFlag) !== undefined ){
+							const hitEntity: Target = hitIEntity as Target 
 							hitEntity.hitTarget()
 						}
 					}

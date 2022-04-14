@@ -1,4 +1,4 @@
-import utils from 'node_modules/decentraland-ecs-utils/index'
+import * as utils from '@dcl/ecs-scene-utils'
 import { Game } from './game'
 
 @Component('targetFlag')
@@ -95,7 +95,7 @@ export class Target extends Entity {
 		}
 				
 		// Target is not hit
-			this.addComponent(new utils.Delay(3000, () =>{
+			this.addComponentOrReplace(new utils.Delay(3000, () =>{
 				// log('perdu')
 				if(this.touchable === true){
 					this.displayLife()

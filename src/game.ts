@@ -1,9 +1,9 @@
-import utils from "../node_modules/decentraland-ecs-utils/index"
+import * as utils from '@dcl/ecs-scene-utils'
 import { Target } from './target'
 import { Score } from './score'
 import { Player } from './player'
 import { Advertisement } from './ad'
-import * as ui from '../node_modules/@dcl/ui-utils/index'
+import * as ui from '@dcl/ui-scene-utils'
 import { buildLeaderBoard } from './leaderBoard'
 import { publishScore, getScoreBoard, getAds } from './serverHandler'
 
@@ -46,7 +46,7 @@ export class Game extends Entity {
 		this.score = new Score(this)
 		this.addComponent(new GameFlag())
 		this.addComponent(new Timer(this.timeToStart))
-		this.startCounter = new ui.UICounter(this.timeToStart, '-50%', '50%', Color4.Red(), 70, true)
+		this.startCounter = new ui.UICounter(this.timeToStart, -(1300/2), (600/2), Color4.Red(), 70, true)
 		this.startCounter.uiText.visible = false
 		
 		this.starter = new Entity()
@@ -103,7 +103,7 @@ export class Game extends Entity {
 	
 	stop(){
 		this.started = false
-		ui.displayAnnouncement('Your score is : '+this.score.score+' points', 5, true, Color4.Red(), 50, true)
+		ui.displayAnnouncement('Your score is : '+this.score.score+' points', 5, Color4.Red(), 50, true)
 		this.player.stop()
 		publishScore(this.score.score)
 		this.addComponent(
